@@ -1,11 +1,11 @@
 import os
+from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
 from typing import List, TypeVar, Generic, Literal
 
 import requests
 from pydantic import BaseModel
-from pydantic.dataclasses import dataclass
 from pydantic.generics import GenericModel
 
 __version__ = 'dev'
@@ -19,19 +19,19 @@ def __format_datetime(date: datetime | str):
     return date
 
 
-def __build_request(request: BaseModel|None, exclude_params: List[str] = []):
+def __build_request(request: object | None, exclude_params: List[str] = []):
     tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
     access_key = os.getenv("MARKETSTACK_API_KEY")
     assert access_key is not None and len(
         access_key
     ) > 0, "Environment variable MARKETSTACK_API_KEY is not defined"
 
+    params = {}
     if request:
-        params = request.dict(exclude_none=True)
-        for arg in exclude_params:
-            del params[arg]
-    else:
-        params = {}
+        for param, val in request.__dict__.items():
+            if val is None or param in exclude_params:
+                continue
+            params[param] = val
 
     params['access_key'] = access_key
     protocol = "https" if tls_support == "1" else "http"
@@ -62,7 +62,7 @@ class ErrorCode(StrEnum):
 class Error(BaseModel):
     code: ErrorCode
     message: str
-    context: dict
+    context: dict | None
 
 
 class Response(GenericModel, Generic[R]):
@@ -92,7 +92,7 @@ class Dividend(SimpleDate):
 class IntervalPrice(BaseModel):
     date: datetime
     symbol: str
-    volume: float
+    volume: float|None
     open: float
     close: float | None
     low: float
@@ -127,60 +127,70 @@ class Sort(StrEnum):
     DESC = "DESC"
 
 
-class LimitRequest(BaseModel):
-    limit: int = None
-    offset: int = None
-
-
-class SymbolsRequest(LimitRequest):
+@dataclass()
+class SymbolsRequest:
     symbols: List[str]
     sort: Sort = None
     date_from: datetime = None
     date_to: datetime = None
+    limit: int = None
+    offset: int = None
 
     def get_symbols(self):
         return ",".join(map(str.strip, self.symbols))
 
 
+@dataclass()
 class DateRequest(SymbolsRequest):
     date: datetime | Literal["latest"] = None
 
 
+@dataclass()
 class EodRequest(DateRequest):
     exchange: str = None
 
 
+@dataclass()
 class IntradayRequest(EodRequest):
     interval: Interval = None
 
 
+@dataclass()
 class SplitsRequest(SymbolsRequest):
     pass
 
 
+@dataclass()
 class DividendsRequest(SymbolsRequest):
     pass
 
 
-class SearchRequest(LimitRequest):
-    search: str = None
-
-
-class TickersRequest(SearchRequest):
+@dataclass()
+class TickersRequest:
     symbol: str
+    search: str = None
     exchange: str = None
+    limit: int = None
+    offset: int = None
 
 
-class ExchangesRequest(SearchRequest):
-    pass
+@dataclass()
+class ExchangesRequest:
+    search: str = None
+    limit: int = None
+    offset: int = None
 
 
-class CurrenciesRequest(LimitRequest):
-    pass
+@dataclass()
+class CurrenciesRequest:
+    limit: int = None
+    offset: int = None
 
 
-class TimezonesRequest(LimitRequest):
-    pass
+@dataclass()
+class TimezonesRequest:
+    limit: int = None
+    offset: int = None
 
 
 class Currency(BaseModel):
@@ -218,8 +228,8 @@ def __date_query(
     request: DateRequest,
     response_type: R,
 ):
-    base_url, params = __build_request(request, exclude_params=["date", "symbols"])
-    params["symbols"] = request.get_symbols()
+    base_url, params = __build_request(request, exclude_params=["date"])
+    #params["symbols"] = request.get_symbols()
 
     url = f"{base_url}/{endpoint}"
     if request.date:
@@ -231,7 +241,7 @@ def __date_query(
 
 def __simple_query(
     endpoint: str,
-    request: LimitRequest|None,
+    request: object | None,
     response_type: R,
 ):
     base_url, params = __build_request(request)

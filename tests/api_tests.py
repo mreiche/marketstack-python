@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest, SymbolsRequest, IntervalPrice
+from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest
 
 date_format = "%Y-%m-%d %H:%M:%S"
 
@@ -72,3 +72,4 @@ def test_query_splits():
     assert response.pagination.count == 5
     assert response.data[0].datetime.isoformat() == "2020-08-31T00:00:00"
     assert response.data[0].split_factor > 0
+    assert response.data[0].symbol == "AAPL"
