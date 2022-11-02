@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest
+from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest, PathComponent, query_dividends, DividendsRequest
 
 date_format = "%Y-%m-%d %H:%M:%S"
 
@@ -11,20 +11,24 @@ def setup_module():
 
 
 def test_query_intraday_feature_not_supported():
-    response = query_intraday(IntradayRequest(
-        symbols=["AAPL", "AMZN"],
-        interval=Interval.min5,
-    ))
+    response = query_intraday(
+        IntradayRequest(
+            symbols=["AAPL", "AMZN"],
+            interval=Interval.min5,
+        )
+    )
     assert response.error.code == ErrorCode.function_access_restricted
 
 
 def test_query_intraday_symbols():
-    response = query_intraday(IntradayRequest(
-        symbols=["AAPL", "AMZN"],
-        limit=10,
-        date_from=datetime.strptime("2022-01-01 00:00:00", date_format),
-        date_to=datetime.strptime("2022-01-01 23:23:59", date_format),
-    ))
+    response = query_intraday(
+        IntradayRequest(
+            symbols=["AAPL", "AMZN"],
+            limit=10,
+            date_from=datetime.strptime("2022-01-01 00:00:00", date_format),
+            date_to=datetime.strptime("2022-01-01 23:23:59", date_format),
+        )
+    )
     assert response.error is None
     aapl = None
     amzn = None
@@ -53,13 +57,13 @@ def test_query_intraday_symbols_specific_date():
 
 
 def test_query_intraday_symbols_latest():
-    response = query_intraday(IntradayRequest(symbols=["AAPL"], date="latest"))
+    response = query_intraday(IntradayRequest(symbols=["AAPL"], date=PathComponent.latest))
     assert response.error is None
     assert response.pagination.count == 1
 
 
 def test_query_eod():
-    response = query_eod(EodRequest(symbols=["AAPL"], date="latest"))
+    response = query_eod(EodRequest(symbols=["AAPL"], date=PathComponent.latest))
     assert response.error is None
     assert response.pagination.count == 1
     assert response.data[0].adj_low > 0
@@ -72,4 +76,19 @@ def test_query_splits():
     assert response.pagination.count == 5
     assert response.data[0].datetime.isoformat() == "2020-08-31T00:00:00"
     assert response.data[0].split_factor > 0
+    assert response.data[0].symbol == "AAPL"
+
+
+def test_query_dividends():
+    response = query_dividends(
+        DividendsRequest(
+            symbols=["AAPL"],
+            date_from=datetime.strptime("2020-01-01 00:00:00", date_format),
+            date_to=datetime.strptime("2020-12-31 00:00:00", date_format),
+        )
+    )
+    assert response.error is None
+    assert response.pagination.count == 4
+    assert response.data[0].datetime.isoformat() == "2020-11-06T00:00:00"
+    assert response.data[0].dividend > 0
     assert response.data[0].symbol == "AAPL"

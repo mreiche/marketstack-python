@@ -19,23 +19,44 @@ def __format_datetime(date: datetime | str):
     return date
 
 
-def __build_request(request: object | None, exclude_params: List[str] = []):
+class PathComponent(StrEnum):
+    tickers = "tickers"
+    exchanges = "exchanges"
+    eod = "eod"
+    intraday = "intraday"
+    latest = "latest"
+    splits = "splits"
+    dividends = "dividends"
+    currencies = "currencies"
+
+
+class BaseRequest:
+    def get_query_params(self, exclude_params: List[str] = None) -> dict[str, str]:
+        params = {}
+        for param, val in self.__dict__.items():
+            if val is None or param in exclude_params:
+                continue
+            params[param] = val
+        return params
+
+    def get_path_params(self) -> List[str]:
+        return []
+
+    def get_response_type(self) -> R:
+        return None
+
+
+def __build_request(request: BaseRequest | None):
     tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
     access_key = os.getenv("MARKETSTACK_API_KEY")
     assert access_key is not None and len(
         access_key
     ) > 0, "Environment variable MARKETSTACK_API_KEY is not defined"
 
-    params = {}
-    if request:
-        for param, val in request.__dict__.items():
-            if val is None or param in exclude_params:
-                continue
-            params[param] = val
-
-    params['access_key'] = access_key
+    query_params = request.get_query_params()
+    query_params['access_key'] = access_key
     protocol = "https" if tls_support == "1" else "http"
-    return f"{protocol}://api.marketstack.com/v1", params
+    return f"{protocol}://api.marketstack.com/v1/" + ("/".join(request.get_path_params())), query_params
 
 
 class Pagination(BaseModel):
@@ -92,7 +113,7 @@ class Dividend(SimpleDate):
 class IntervalPrice(BaseModel):
     date: datetime
     symbol: str
-    volume: float|None
+    volume: float | None
     open: float
     close: float | None
     low: float
@@ -128,7 +149,7 @@ class Sort(StrEnum):
 
 
 @dataclass()
-class SymbolsRequest:
+class SymbolsRequest(BaseRequest):
     symbols: List[str]
     sort: Sort = None
     date_from: datetime = None
@@ -136,59 +157,103 @@ class SymbolsRequest:
     limit: int = None
     offset: int = None
 
-    def get_symbols(self):
-        return ",".join(map(str.strip, self.symbols))
+    def get_query_params(self, **kwargs):
+        params = super().get_query_params(exclude_params=["symbols"])
+        params['symbols'] = ",".join(map(str.strip, self.symbols))
+        return params
 
 
 @dataclass()
-class DateRequest(SymbolsRequest):
-    date: datetime | Literal["latest"] = None
-
-
-@dataclass()
-class EodRequest(DateRequest):
+class EodRequest(SymbolsRequest):
     exchange: str = None
+    date: datetime | Literal[PathComponent.latest] = None
+
+    def get_path_params(self) -> List[str]:
+        path = [PathComponent.eod]
+        if self.date is not None:
+            path.append(__format_datetime(self.date))
+        return path
 
 
 @dataclass()
-class IntradayRequest(EodRequest):
+class IntradayRequest(SymbolsRequest):
     interval: Interval = None
+    exchange: str = None
+    date: datetime|Literal[PathComponent.latest] = None
+
+    def get_path_params(self) -> List[str]:
+        path = [PathComponent.intraday]
+        if self.date is not None:
+            path.append(__format_datetime(self.date))
+        return path
 
 
 @dataclass()
 class SplitsRequest(SymbolsRequest):
-    pass
+    def get_path_params(self) -> List[str]:
+        return [PathComponent.splits]
 
 
 @dataclass()
 class DividendsRequest(SymbolsRequest):
-    pass
+    def get_path_params(self) -> List[str]:
+        return [PathComponent.dividends]
+
+    def get_response_type(self) -> R:
+        return Dividend
 
 
 @dataclass()
-class TickersRequest:
-    symbol: str
+class TickersRequest(BaseRequest):
+    symbol: str = None
     search: str = None
     exchange: str = None
     limit: int = None
     offset: int = None
+    date: datetime|Literal[PathComponent.latest] = None
+    subpath: PathComponent = None
+
+    def get_path_params(self):
+        path = [PathComponent.tickers]
+        if self.symbol is not None:
+            path.append(self.symbol)
+            if self.subpath is not None:
+                path.append(self.subpath)
+                if self.date is not None:
+                    path.append(__format_datetime(self.date))
 
 
 @dataclass()
-class ExchangesRequest:
+class ExchangesRequest(BaseRequest):
     search: str = None
     limit: int = None
     offset: int = None
+    subpath: PathComponent = None
+    mic: str = None
+    date: datetime|Literal[PathComponent.latest] = None
+
+    def get_path_params(self):
+        # "{Company} is a {Department} Portal.".format(**value)
+        path = [PathComponent.exchanges]
+        if self.mic is not None:
+            path.append(self.mic)
+            if self.subpath is not None:
+                path.append(self.subpath)
+                if self.date is not None:
+                    path.append(__format_datetime(self.date))
 
 
 @dataclass()
-class CurrenciesRequest:
+class CurrenciesRequest(BaseRequest):
     limit: int = None
     offset: int = None
 
+    def get_path_params(self):
+        return [PathComponent.currencies]
+
 
 @dataclass()
-class TimezonesRequest:
+class TimezonesRequest(BaseRequest):
     limit: int = None
     offset: int = None
 
@@ -223,60 +288,39 @@ class Ticker(BaseModel):
     stock_exchange: Exchange
 
 
-def __date_query(
-    endpoint: str,
-    request: DateRequest,
-    response_type: R,
-):
-    base_url, params = __build_request(request, exclude_params=["date"])
-    #params["symbols"] = request.get_symbols()
-
-    url = f"{base_url}/{endpoint}"
-    if request.date:
-        url += f"/{__format_datetime(request.date)}"
-
-    result = requests.get(url, params)
-    return Response[response_type](**result.json())
-
-
-def __simple_query(
-    endpoint: str,
-    request: object | None,
-    response_type: R,
-):
-    base_url, params = __build_request(request)
-    url = f"{base_url}/{endpoint}"
+def __query(request: BaseRequest, response_type: R):
+    url, params = __build_request(request)
     result = requests.get(url, params)
     return Response[response_type](**result.json())
 
 
 def query_intraday(request: IntradayRequest) -> Response[IntervalPrice]:
-    return __date_query("intraday", request, IntervalPrice)
+    return __query(request, IntervalPrice)
 
 
 def query_eod(request: EodRequest) -> Response[EodPrice]:
-    return __date_query("eod", request, EodPrice)
+    return __query(request, EodPrice)
 
 
 def query_splits(request: SplitsRequest) -> Response[Split]:
-    return __simple_query("splits", request, Split)
+    return __query(request, Split)
 
 
 def query_dividends(request: DividendsRequest) -> Response[Dividend]:
-    return __simple_query("dividends", request, Dividend)
+    return __query(request, Dividend)
 
 
 def query_currencies(request: CurrenciesRequest = None) -> Response[Currency]:
-    return __simple_query("currencies", request, Currency)
+    return __query(request, Currency)
 
 
 def query_timezones(request: TimezonesRequest = None) -> Response[Timezone]:
-    return __simple_query("timezones", request, Timezone)
+    return __query(request, Timezone)
 
 
 def query_tickers(request: TickersRequest = None) -> Response[Ticker]:
-    return __simple_query("tickers", request, Ticker)
+    return __query(request, Ticker)
 
 
 def query_exchanges(request: ExchangesRequest = None) -> Response[Exchange]:
-    return __simple_query("exchanges", request, Exchange)
+    return __query(request, Exchange)
