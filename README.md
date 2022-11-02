@@ -1,5 +1,5 @@
 # python-marketstack
-Python OpenAPI implementation of the Marketstack API based on https://github.com/mreiche/marketstack-openapi (*not yet published nor fully implemented*).
+Python OpenAPI implementation of the [Marketstack API](https://marketstack.com/documentation) based on https://github.com/mreiche/marketstack-openapi (*not yet published nor fully implemented*).
 
 ## Usage
 
@@ -45,3 +45,19 @@ Regenerate the client
 ```shell
 ./regenerate.sh
 ```
+
+### Release update
+1. Update version in `setup.py`
+2. Package library
+    ```shell
+    python setup.py sdist
+    ```
+3. Publish library
+    ```shell
+    twine upload dist/{packaged file}.tar.gz
+    ```
+
+## References
+
+- https://github.com/MichaelKim0407/tutorial-pip-package
+- https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/
