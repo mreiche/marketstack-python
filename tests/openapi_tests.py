@@ -2,13 +2,13 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openapi.api.eod import eod, eod_latest
-from openapi.api.splits import splits
-from openapi.api.dividends import dividends
-from openapi.api.currencies import currencies
-from openapi.api.timezones import timezones
-from openapi.api.tickers import ticker_symbol_eod
-from openapi.client import Client
+from marketstack.api.currencies import currencies
+from marketstack.api.dividends import dividends
+from marketstack.api.eod import eod, eod_latest
+from marketstack.api.splits import splits
+from marketstack.api.tickers import ticker_symbol_eod
+from marketstack.api.timezones import timezones
+from marketstack.client import Client
 
 
 def setup_module():
@@ -78,7 +78,7 @@ def test_splits():
         client=client,
         access_key=os.getenv("MARKETSTACK_API_KEY"),
         symbols="AAPL",
-        date_to="2022-01-01"
+        date_to="2022-01-01",
     )
     assert response.pagination.count == 5
     assert response.data[0].date == "2020-08-31"
@@ -104,9 +104,7 @@ def test_dividends():
 def test_currencies():
     client = create_client()
     response = currencies.sync(
-        client=client,
-        access_key=os.getenv("MARKETSTACK_API_KEY"),
-        limit=1
+        client=client, access_key=os.getenv("MARKETSTACK_API_KEY"), limit=1
     )
     assert response.pagination.count == 1
     assert response.data[0].symbol == "$"
@@ -116,9 +114,7 @@ def test_currencies():
 def test_timezones():
     client = create_client()
     response = timezones.sync(
-        client=client,
-        access_key=os.getenv("MARKETSTACK_API_KEY"),
-        limit=1
+        client=client, access_key=os.getenv("MARKETSTACK_API_KEY"), limit=1
     )
     assert response.pagination.count == 1
     assert response.data[0].timezone == "America/New_York"

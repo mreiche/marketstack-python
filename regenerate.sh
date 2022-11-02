@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-rm -rf openapi
+rm -rf marketstack
 openapi-python-client generate --path ../marketstack-openapi/marketstack-openapi.json --meta none
-mv marketstack_open_api_client openapi
+mv marketstack_open_api_client marketstack

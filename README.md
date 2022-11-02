@@ -13,7 +13,7 @@ MARKETSTACK_TLS_SUPPORT="1"
 ### Create your client
 
 ```python
-from marketstack.openapi.client import Client
+from marketstack.client import Client
 import os
 
 tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
@@ -23,7 +23,7 @@ client = Client(base_url=f"{protocol}://api.marketstack.com/v1")
 
 ### Import and call operations
 ```python
-from marketstack.openapi.api.eod import eod
+from marketstack.api.eod import eod
 import os
 
 response = eod.sync(
