@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest, PathComponent, query_dividends, DividendsRequest
+from marketstack import query_intraday, Interval, ErrorCode, query_eod, IntradayRequest, EodRequest, query_splits, SplitsRequest, PathComponent, query_dividends, DividendsRequest, query_currencies, CurrenciesRequest, query_timezones, TimezonesRequest, query_tickers, TickersRequest, query_exchanges, ExchangesRequest
 
 date_format = "%Y-%m-%d %H:%M:%S"
 
@@ -92,3 +92,32 @@ def test_query_dividends():
     assert response.data[0].datetime.isoformat() == "2020-11-06T00:00:00"
     assert response.data[0].dividend > 0
     assert response.data[0].symbol == "AAPL"
+
+
+def test_query_currencies():
+    response = query_currencies(CurrenciesRequest(limit=1))
+    assert response.error is None
+    assert response.pagination.count == 1
+    assert response.data[0].symbol == "$"
+    assert response.data[0].code == "USD"
+
+
+def test_query_timezones():
+    response = query_timezones(TimezonesRequest(limit=1))
+    assert response.error is None
+    assert response.pagination.count == 1
+    assert response.data[0].timezone == "America/New_York"
+
+
+def test_query_tickers():
+    response = query_tickers(TickersRequest(limit=1))
+    assert response.error is None
+    assert response.pagination.count == 1
+    assert response.data[0].symbol == "MSFT"
+
+
+def test_query_exchanges():
+    response = query_exchanges(ExchangesRequest(limit=1))
+    assert response.error is None
+    assert response.pagination.count == 1
+    assert response.data[0].mic == "XNAS"

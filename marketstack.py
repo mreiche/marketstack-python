@@ -13,7 +13,7 @@ __version__ = 'dev'
 R = TypeVar('R')
 
 
-def __format_datetime(date: datetime | str):
+def format_datetime(date: datetime | str):
     if isinstance(date, datetime):
         return date.isoformat() + 'Z'
     return date
@@ -28,13 +28,14 @@ class PathComponent(StrEnum):
     splits = "splits"
     dividends = "dividends"
     currencies = "currencies"
+    timezones = "timezones"
 
 
 class BaseRequest:
     def get_query_params(self, exclude_params: List[str] = None) -> dict[str, str]:
         params = {}
         for param, val in self.__dict__.items():
-            if val is None or param in exclude_params:
+            if val is None or (exclude_params is not None and param in exclude_params):
                 continue
             params[param] = val
         return params
@@ -56,7 +57,8 @@ def __build_request(request: BaseRequest | None):
     query_params = request.get_query_params()
     query_params['access_key'] = access_key
     protocol = "https" if tls_support == "1" else "http"
-    return f"{protocol}://api.marketstack.com/v1/" + ("/".join(request.get_path_params())), query_params
+    return f"{protocol}://api.marketstack.com/v1/" + (
+        "/".join(request.get_path_params())), query_params
 
 
 class Pagination(BaseModel):
@@ -171,7 +173,7 @@ class EodRequest(SymbolsRequest):
     def get_path_params(self) -> List[str]:
         path = [PathComponent.eod]
         if self.date is not None:
-            path.append(__format_datetime(self.date))
+            path.append(format_datetime(self.date))
         return path
 
 
@@ -179,12 +181,12 @@ class EodRequest(SymbolsRequest):
 class IntradayRequest(SymbolsRequest):
     interval: Interval = None
     exchange: str = None
-    date: datetime|Literal[PathComponent.latest] = None
+    date: datetime | Literal[PathComponent.latest] = None
 
     def get_path_params(self) -> List[str]:
         path = [PathComponent.intraday]
         if self.date is not None:
-            path.append(__format_datetime(self.date))
+            path.append(format_datetime(self.date))
         return path
 
 
@@ -210,8 +212,11 @@ class TickersRequest(BaseRequest):
     exchange: str = None
     limit: int = None
     offset: int = None
-    date: datetime|Literal[PathComponent.latest] = None
+    date: datetime | Literal[PathComponent.latest] = None
     subpath: PathComponent = None
+
+    def get_query_params(self, **kwargs):
+        return super().get_query_params(exclude_params=["date"])
 
     def get_path_params(self):
         path = [PathComponent.tickers]
@@ -220,7 +225,8 @@ class TickersRequest(BaseRequest):
             if self.subpath is not None:
                 path.append(self.subpath)
                 if self.date is not None:
-                    path.append(__format_datetime(self.date))
+                    path.append(format_datetime(self.date))
+        return path
 
 
 @dataclass()
@@ -230,7 +236,10 @@ class ExchangesRequest(BaseRequest):
     offset: int = None
     subpath: PathComponent = None
     mic: str = None
-    date: datetime|Literal[PathComponent.latest] = None
+    date: datetime | Literal[PathComponent.latest] = None
+
+    def get_query_params(self, **kwargs):
+        return super().get_query_params(exclude_params=["date"])
 
     def get_path_params(self):
         # "{Company} is a {Department} Portal.".format(**value)
@@ -240,7 +249,8 @@ class ExchangesRequest(BaseRequest):
             if self.subpath is not None:
                 path.append(self.subpath)
                 if self.date is not None:
-                    path.append(__format_datetime(self.date))
+                    path.append(format_datetime(self.date))
+        return path
 
 
 @dataclass()
@@ -256,6 +266,9 @@ class CurrenciesRequest(BaseRequest):
 class TimezonesRequest(BaseRequest):
     limit: int = None
     offset: int = None
+
+    def get_path_params(self) -> List[str]:
+        return [PathComponent.timezones]
 
 
 class Currency(BaseModel):
@@ -279,13 +292,13 @@ class Exchange(BaseModel):
     country_code: str
     city: str
     website: str
-    timezone: Timezone
 
 
 class Ticker(BaseModel):
     name: str
     symbol: str
     stock_exchange: Exchange
+    timezone: Timezone | None
 
 
 def __query(request: BaseRequest, response_type: R):
