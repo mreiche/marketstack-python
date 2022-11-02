@@ -1,5 +1,5 @@
 # python-marketstack
-Python OpenAPI implementation of the Marketstack API (*not yet published*). 
+Python OpenAPI implementation of the Marketstack API based on https://github.com/mreiche/marketstack-openapi (*not yet published nor fully implemented*).
 
 ## Usage
 
