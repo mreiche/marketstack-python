@@ -2,6 +2,7 @@ import os
 
 from marketstack.api.currencies import currencies
 from marketstack.client import Client
+
 from tests.setup import create_client
 
 client: Client

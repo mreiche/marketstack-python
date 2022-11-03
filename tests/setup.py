@@ -1,19 +1,20 @@
+import os
+from datetime import datetime
+from pathlib import Path
+
 from dotenv import load_dotenv
 from marketstack.client import Client
-import os
-from pathlib import Path
-from datetime import datetime
 
 
 def next_weekday(date: datetime):
     while date.weekday() >= 5:
-        date = date.replace(day=date.day+1)
+        date = date.replace(day=date.day + 1)
     return date
 
 
 now = next_weekday(datetime.now().replace(month=1, day=1))
 date_from = now.strftime("%Y-%m-%d")
-now = next_weekday(now.replace(month=now.month+1))
+now = next_weekday(now.replace(month=now.month + 1))
 date_to = now.strftime("%Y-%m-%d")
 
 

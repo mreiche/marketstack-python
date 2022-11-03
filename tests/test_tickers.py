@@ -7,6 +7,7 @@ from marketstack.api.tickers import (
 )
 from marketstack.client import Client
 from marketstack.models import ErrorResponse
+
 from tests.setup import create_client
 
 client: Client

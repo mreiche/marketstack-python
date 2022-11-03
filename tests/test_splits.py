@@ -2,6 +2,7 @@ import os
 
 from marketstack.api.splits import splits
 from marketstack.client import Client
+
 from tests.setup import create_client
 
 client: Client

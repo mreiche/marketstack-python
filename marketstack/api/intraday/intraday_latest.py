@@ -17,8 +17,8 @@ def _get_kwargs(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, Sort] = UNSET,
-    interval: Union[Unset, None, Interval] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
+    interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -36,15 +36,35 @@ def _get_kwargs(
 
     params["exchange"] = exchange
 
-    json_sort: Union[Unset, None, str] = UNSET
-    if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+    json_sort: Union[None, Unset, str]
+    if isinstance(sort, Unset):
+        json_sort = UNSET
+    elif sort is None:
+        json_sort = None
+
+    elif isinstance(sort, Sort):
+        json_sort = UNSET
+        if not isinstance(sort, Unset):
+            json_sort = sort.value
+
+    else:
+        json_sort = sort
 
     params["sort"] = json_sort
 
-    json_interval: Union[Unset, None, str] = UNSET
-    if not isinstance(interval, Unset):
-        json_interval = interval.value if interval else None
+    json_interval: Union[None, Unset, str]
+    if isinstance(interval, Unset):
+        json_interval = UNSET
+    elif interval is None:
+        json_interval = None
+
+    elif isinstance(interval, Interval):
+        json_interval = UNSET
+        if not isinstance(interval, Unset):
+            json_interval = interval.value
+
+    else:
+        json_interval = interval
 
     params["interval"] = json_interval
 
@@ -115,8 +135,8 @@ def sync_detailed(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, Sort] = UNSET,
-    interval: Union[Unset, None, Interval] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
+    interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -130,8 +150,8 @@ def sync_detailed(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[Unset, None, Sort]): An enumeration.
-        interval (Union[Unset, None, Interval]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
+        interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -170,8 +190,8 @@ def sync(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, Sort] = UNSET,
-    interval: Union[Unset, None, Interval] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
+    interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -185,8 +205,8 @@ def sync(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[Unset, None, Sort]): An enumeration.
-        interval (Union[Unset, None, Interval]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
+        interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -218,8 +238,8 @@ async def asyncio_detailed(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, Sort] = UNSET,
-    interval: Union[Unset, None, Interval] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
+    interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -233,8 +253,8 @@ async def asyncio_detailed(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[Unset, None, Sort]): An enumeration.
-        interval (Union[Unset, None, Interval]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
+        interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -271,8 +291,8 @@ async def asyncio(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[Unset, None, Sort] = UNSET,
-    interval: Union[Unset, None, Interval] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
+    interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -286,8 +306,8 @@ async def asyncio(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[Unset, None, Sort]): An enumeration.
-        interval (Union[Unset, None, Interval]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
+        interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or

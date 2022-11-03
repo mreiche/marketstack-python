@@ -3,6 +3,7 @@ import os
 from marketstack.api.exchanges import exchange_mic_eod_date, exchange_mic_intraday_date
 from marketstack.client import Client
 from marketstack.models import ErrorCode, ErrorResponse
+
 from tests.setup import create_client
 
 client: Client

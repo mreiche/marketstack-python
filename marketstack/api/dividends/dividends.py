@@ -15,7 +15,7 @@ def _get_kwargs(
     client: Client,
     access_key: str,
     symbols: str,
-    sort: Union[Unset, None, Sort] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -31,9 +31,19 @@ def _get_kwargs(
 
     params["symbols"] = symbols
 
-    json_sort: Union[Unset, None, str] = UNSET
-    if not isinstance(sort, Unset):
-        json_sort = sort.value if sort else None
+    json_sort: Union[None, Unset, str]
+    if isinstance(sort, Unset):
+        json_sort = UNSET
+    elif sort is None:
+        json_sort = None
+
+    elif isinstance(sort, Sort):
+        json_sort = UNSET
+        if not isinstance(sort, Unset):
+            json_sort = sort.value
+
+    else:
+        json_sort = sort
 
     params["sort"] = json_sort
 
@@ -99,7 +109,7 @@ def sync_detailed(
     client: Client,
     access_key: str,
     symbols: str,
-    sort: Union[Unset, None, Sort] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -110,7 +120,7 @@ def sync_detailed(
     Args:
         access_key (str):
         symbols (str):
-        sort (Union[Unset, None, Sort]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -146,7 +156,7 @@ def sync(
     client: Client,
     access_key: str,
     symbols: str,
-    sort: Union[Unset, None, Sort] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -157,7 +167,7 @@ def sync(
     Args:
         access_key (str):
         symbols (str):
-        sort (Union[Unset, None, Sort]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -186,7 +196,7 @@ async def asyncio_detailed(
     client: Client,
     access_key: str,
     symbols: str,
-    sort: Union[Unset, None, Sort] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -197,7 +207,7 @@ async def asyncio_detailed(
     Args:
         access_key (str):
         symbols (str):
-        sort (Union[Unset, None, Sort]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -231,7 +241,7 @@ async def asyncio(
     client: Client,
     access_key: str,
     symbols: str,
-    sort: Union[Unset, None, Sort] = UNSET,
+    sort: Union[None, Sort, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -242,7 +252,7 @@ async def asyncio(
     Args:
         access_key (str):
         symbols (str):
-        sort (Union[Unset, None, Sort]): An enumeration.
+        sort (Union[None, Sort, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
