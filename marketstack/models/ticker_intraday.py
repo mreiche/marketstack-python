@@ -2,33 +2,34 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.eod_price import EodPrice
+from ..models.exchange import Exchange
 from ..models.interval_price import IntervalPrice
+from ..models.timezone import Timezone
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="TickerSymbol")
+T = TypeVar("T", bound="TickerIntraday")
 
 
 @attr.s(auto_attribs=True)
-class TickerSymbol:
+class TickerIntraday:
     """
     Attributes:
         name (str):
         symbol (str):
         has_intraday (bool):
         has_eod (bool):
-        coountry (Union[Unset, str]):
-        eod (Union[Unset, List[EodPrice]]):
-        intraday (Union[Unset, List[IntervalPrice]]):
+        intraday (List[IntervalPrice]):
+        stock_exchange (Union[Unset, Exchange]):
+        timezone (Union[Unset, Timezone]):
     """
 
     name: str
     symbol: str
     has_intraday: bool
     has_eod: bool
-    coountry: Union[Unset, str] = UNSET
-    eod: Union[Unset, List[EodPrice]] = UNSET
-    intraday: Union[Unset, List[IntervalPrice]] = UNSET
+    intraday: List[IntervalPrice]
+    stock_exchange: Union[Unset, Exchange] = UNSET
+    timezone: Union[Unset, Timezone] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -36,22 +37,19 @@ class TickerSymbol:
         symbol = self.symbol
         has_intraday = self.has_intraday
         has_eod = self.has_eod
-        coountry = self.coountry
-        eod: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.eod, Unset):
-            eod = []
-            for eod_item_data in self.eod:
-                eod_item = eod_item_data.to_dict()
+        intraday = []
+        for intraday_item_data in self.intraday:
+            intraday_item = intraday_item_data.to_dict()
 
-                eod.append(eod_item)
+            intraday.append(intraday_item)
 
-        intraday: Union[Unset, List[Dict[str, Any]]] = UNSET
-        if not isinstance(self.intraday, Unset):
-            intraday = []
-            for intraday_item_data in self.intraday:
-                intraday_item = intraday_item_data.to_dict()
+        stock_exchange: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.stock_exchange, Unset):
+            stock_exchange = self.stock_exchange.to_dict()
 
-                intraday.append(intraday_item)
+        timezone: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.timezone, Unset):
+            timezone = self.timezone.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -61,14 +59,13 @@ class TickerSymbol:
                 "symbol": symbol,
                 "has_intraday": has_intraday,
                 "has_eod": has_eod,
+                "intraday": intraday,
             }
         )
-        if coountry is not UNSET:
-            field_dict["coountry"] = coountry
-        if eod is not UNSET:
-            field_dict["eod"] = eod
-        if intraday is not UNSET:
-            field_dict["intraday"] = intraday
+        if stock_exchange is not UNSET:
+            field_dict["stock_exchange"] = stock_exchange
+        if timezone is not UNSET:
+            field_dict["timezone"] = timezone
 
         return field_dict
 
@@ -83,34 +80,39 @@ class TickerSymbol:
 
         has_eod = d.pop("has_eod")
 
-        coountry = d.pop("coountry", UNSET)
-
-        eod = []
-        _eod = d.pop("eod", UNSET)
-        for eod_item_data in _eod or []:
-            eod_item = EodPrice.from_dict(eod_item_data)
-
-            eod.append(eod_item)
-
         intraday = []
-        _intraday = d.pop("intraday", UNSET)
-        for intraday_item_data in _intraday or []:
+        _intraday = d.pop("intraday")
+        for intraday_item_data in _intraday:
             intraday_item = IntervalPrice.from_dict(intraday_item_data)
 
             intraday.append(intraday_item)
 
-        ticker_symbol = cls(
+        _stock_exchange = d.pop("stock_exchange", UNSET)
+        stock_exchange: Union[Unset, Exchange]
+        if isinstance(_stock_exchange, Unset):
+            stock_exchange = UNSET
+        else:
+            stock_exchange = Exchange.from_dict(_stock_exchange)
+
+        _timezone = d.pop("timezone", UNSET)
+        timezone: Union[Unset, Timezone]
+        if isinstance(_timezone, Unset):
+            timezone = UNSET
+        else:
+            timezone = Timezone.from_dict(_timezone)
+
+        ticker_intraday = cls(
             name=name,
             symbol=symbol,
             has_intraday=has_intraday,
             has_eod=has_eod,
-            coountry=coountry,
-            eod=eod,
             intraday=intraday,
+            stock_exchange=stock_exchange,
+            timezone=timezone,
         )
 
-        ticker_symbol.additional_properties = d
-        return ticker_symbol
+        ticker_intraday.additional_properties = d
+        return ticker_intraday
 
     @property
     def additional_keys(self) -> List[str]:

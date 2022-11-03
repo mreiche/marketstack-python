@@ -28,6 +28,7 @@ class EodPrice:
         adj_volume (float):
         volume (Union[Unset, float]):
         close (Union[Unset, float]):
+        last (Union[Unset, float]):
     """
 
     date: datetime.datetime
@@ -45,6 +46,7 @@ class EodPrice:
     adj_volume: float
     volume: Union[Unset, float] = UNSET
     close: Union[Unset, float] = UNSET
+    last: Union[Unset, float] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -64,6 +66,7 @@ class EodPrice:
         adj_volume = self.adj_volume
         volume = self.volume
         close = self.close
+        last = self.last
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -88,6 +91,8 @@ class EodPrice:
             field_dict["volume"] = volume
         if close is not UNSET:
             field_dict["close"] = close
+        if last is not UNSET:
+            field_dict["last"] = last
 
         return field_dict
 
@@ -124,6 +129,8 @@ class EodPrice:
 
         close = d.pop("close", UNSET)
 
+        last = d.pop("last", UNSET)
+
         eod_price = cls(
             date=date,
             symbol=symbol,
@@ -140,6 +147,7 @@ class EodPrice:
             adj_volume=adj_volume,
             volume=volume,
             close=close,
+            last=last,
         )
 
         eod_price.additional_properties = d

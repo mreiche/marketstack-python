@@ -5,14 +5,14 @@ import httpx
 from ...client import Client
 from ...models.eod_price import EodPrice
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
 def _get_kwargs(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Dict[str, Any]:
     url = "{}/tickers/{symbol}/eod/latest".format(client.base_url, symbol=symbol)
 
@@ -63,13 +63,13 @@ def sync_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Response[Union[EodPrice, HTTPValidationError]]:
     """Symbol Eod Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[EodPrice, HTTPValidationError]]
@@ -93,13 +93,13 @@ def sync(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Optional[Union[EodPrice, HTTPValidationError]]:
     """Symbol Eod Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[EodPrice, HTTPValidationError]]
@@ -116,13 +116,13 @@ async def asyncio_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Response[Union[EodPrice, HTTPValidationError]]:
     """Symbol Eod Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[EodPrice, HTTPValidationError]]
@@ -144,13 +144,13 @@ async def asyncio(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Optional[Union[EodPrice, HTTPValidationError]]:
     """Symbol Eod Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[EodPrice, HTTPValidationError]]

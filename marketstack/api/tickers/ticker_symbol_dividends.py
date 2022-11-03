@@ -13,7 +13,7 @@ def _get_kwargs(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -77,7 +77,7 @@ def sync_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -86,7 +86,7 @@ def sync_detailed(
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -118,7 +118,7 @@ def sync(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -127,7 +127,7 @@ def sync(
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -152,7 +152,7 @@ async def asyncio_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -161,7 +161,7 @@ async def asyncio_detailed(
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -191,7 +191,7 @@ async def asyncio(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -200,7 +200,7 @@ async def asyncio(
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z

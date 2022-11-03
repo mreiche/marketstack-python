@@ -13,7 +13,7 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
@@ -95,7 +95,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
@@ -108,7 +108,7 @@ def sync_detailed(
     """Latest
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         symbols (Union[Unset, None, str]):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -148,7 +148,7 @@ def sync_detailed(
 def sync(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
@@ -161,7 +161,7 @@ def sync(
     """Latest
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         symbols (Union[Unset, None, str]):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -194,7 +194,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
@@ -207,7 +207,7 @@ async def asyncio_detailed(
     """Latest
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         symbols (Union[Unset, None, str]):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -245,7 +245,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
@@ -258,7 +258,7 @@ async def asyncio(
     """Latest
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         symbols (Union[Unset, None, str]):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.

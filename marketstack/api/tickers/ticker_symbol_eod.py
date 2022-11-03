@@ -4,7 +4,7 @@ import httpx
 
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_ticker_symbol import ResponseTickerSymbol
+from ...models.response_ticker_eod import ResponseTickerEod
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
@@ -13,7 +13,7 @@ def _get_kwargs(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
@@ -59,9 +59,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerEod]]:
     if response.status_code == 200:
-        response_200 = ResponseTickerSymbol.from_dict(response.json())
+        response_200 = ResponseTickerEod.from_dict(response.json())
 
         return response_200
     if response.status_code == 422:
@@ -73,7 +73,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerEod]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -86,19 +86,19 @@ def sync_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerEod]]:
     """Symbol Eod
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -109,7 +109,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerEod]]
     """
 
     kwargs = _get_kwargs(
@@ -136,19 +136,19 @@ def sync(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerEod]]:
     """Symbol Eod
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -159,7 +159,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerEod]]
     """
 
     return sync_detailed(
@@ -179,19 +179,19 @@ async def asyncio_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerEod]]:
     """Symbol Eod
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -202,7 +202,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerEod]]
     """
 
     kwargs = _get_kwargs(
@@ -227,19 +227,19 @@ async def asyncio(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerEod]]:
     """Symbol Eod
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -250,7 +250,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerEod]]
     """
 
     return (

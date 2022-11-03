@@ -4,23 +4,26 @@ import httpx
 
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_listmodels_dividend import ResponseListmodelsDividend
+from ...models.interval import Interval
+from ...models.response_exchange_intraday import ResponseExchangeIntraday
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
+    mic: str,
     *,
     client: Client,
     access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
+    interval: Union[Unset, None, Interval] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/dividends".format(client.base_url)
+    url = "{}/exchanges/{mic}/intraday".format(client.base_url, mic=mic)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
@@ -29,6 +32,12 @@ def _get_kwargs(
     params["access_key"] = access_key
 
     params["symbols"] = symbols
+
+    json_interval: Union[Unset, None, str] = UNSET
+    if not isinstance(interval, Unset):
+        json_interval = interval.value if interval else None
+
+    params["interval"] = json_interval
 
     json_sort: Union[Unset, None, str] = UNSET
     if not isinstance(sort, Unset):
@@ -58,9 +67,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Optional[Union[HTTPValidationError, ResponseExchangeIntraday]]:
     if response.status_code == 200:
-        response_200 = ResponseListmodelsDividend.from_dict(response.json())
+        response_200 = ResponseExchangeIntraday.from_dict(response.json())
 
         return response_200
     if response.status_code == 422:
@@ -72,7 +81,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Response[Union[HTTPValidationError, ResponseExchangeIntraday]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -82,21 +91,25 @@ def _build_response(
 
 
 def sync_detailed(
+    mic: str,
     *,
     client: Client,
     access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
+    interval: Union[Unset, None, Interval] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Response[Union[HTTPValidationError, ResponseExchangeIntraday]]:
+    """Mic Intraday
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
+        interval (Union[Unset, None, Interval]): An enumeration.
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -106,13 +119,15 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeIntraday]]
     """
 
     kwargs = _get_kwargs(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
+        interval=interval,
         sort=sort,
         date_from=date_from,
         date_to=date_to,
@@ -129,21 +144,25 @@ def sync_detailed(
 
 
 def sync(
+    mic: str,
     *,
     client: Client,
     access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
+    interval: Union[Unset, None, Interval] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Optional[Union[HTTPValidationError, ResponseExchangeIntraday]]:
+    """Mic Intraday
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
+        interval (Union[Unset, None, Interval]): An enumeration.
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -153,13 +172,15 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeIntraday]]
     """
 
     return sync_detailed(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
+        interval=interval,
         sort=sort,
         date_from=date_from,
         date_to=date_to,
@@ -169,21 +190,25 @@ def sync(
 
 
 async def asyncio_detailed(
+    mic: str,
     *,
     client: Client,
     access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
+    interval: Union[Unset, None, Interval] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Response[Union[HTTPValidationError, ResponseExchangeIntraday]]:
+    """Mic Intraday
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
+        interval (Union[Unset, None, Interval]): An enumeration.
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -193,13 +218,15 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeIntraday]]
     """
 
     kwargs = _get_kwargs(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
+        interval=interval,
         sort=sort,
         date_from=date_from,
         date_to=date_to,
@@ -214,21 +241,25 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    mic: str,
     *,
     client: Client,
     access_key: str,
     symbols: Union[Unset, None, str] = UNSET,
+    interval: Union[Unset, None, Interval] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Optional[Union[HTTPValidationError, ResponseExchangeIntraday]]:
+    """Mic Intraday
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
+        interval (Union[Unset, None, Interval]): An enumeration.
         sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -238,14 +269,16 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeIntraday]]
     """
 
     return (
         await asyncio_detailed(
+            mic=mic,
             client=client,
             access_key=access_key,
             symbols=symbols,
+            interval=interval,
             sort=sort,
             date_from=date_from,
             date_to=date_to,

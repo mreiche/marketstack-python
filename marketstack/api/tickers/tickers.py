@@ -11,7 +11,7 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -73,7 +73,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -82,7 +82,7 @@ def sync_detailed(
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
         limit (Union[Unset, None, int]):
@@ -112,7 +112,7 @@ def sync_detailed(
 def sync(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -121,7 +121,7 @@ def sync(
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
         limit (Union[Unset, None, int]):
@@ -144,7 +144,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -153,7 +153,7 @@ async def asyncio_detailed(
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
         limit (Union[Unset, None, int]):
@@ -181,7 +181,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -190,7 +190,7 @@ async def asyncio(
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         search (Union[Unset, None, str]):
         limit (Union[Unset, None, int]):

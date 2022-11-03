@@ -5,14 +5,14 @@ import httpx
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.interval_price import IntervalPrice
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
 def _get_kwargs(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Dict[str, Any]:
     url = "{}/tickers/{symbol}/intraday/latest".format(client.base_url, symbol=symbol)
 
@@ -63,13 +63,13 @@ def sync_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Response[Union[HTTPValidationError, IntervalPrice]]:
     """Symbol Intraday Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[HTTPValidationError, IntervalPrice]]
@@ -93,13 +93,13 @@ def sync(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Optional[Union[HTTPValidationError, IntervalPrice]]:
     """Symbol Intraday Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[HTTPValidationError, IntervalPrice]]
@@ -116,13 +116,13 @@ async def asyncio_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Response[Union[HTTPValidationError, IntervalPrice]]:
     """Symbol Intraday Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[HTTPValidationError, IntervalPrice]]
@@ -144,13 +144,13 @@ async def asyncio(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
 ) -> Optional[Union[HTTPValidationError, IntervalPrice]]:
     """Symbol Intraday Latest
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
 
     Returns:
         Response[Union[HTTPValidationError, IntervalPrice]]

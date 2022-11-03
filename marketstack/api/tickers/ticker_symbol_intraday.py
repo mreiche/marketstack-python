@@ -5,7 +5,7 @@ import httpx
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.interval import Interval
-from ...models.response_ticker_symbol import ResponseTickerSymbol
+from ...models.response_ticker_intraday import ResponseTickerIntraday
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
@@ -14,7 +14,7 @@ def _get_kwargs(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Unset, None, Interval] = UNSET,
@@ -67,9 +67,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
     if response.status_code == 200:
-        response_200 = ResponseTickerSymbol.from_dict(response.json())
+        response_200 = ResponseTickerIntraday.from_dict(response.json())
 
         return response_200
     if response.status_code == 422:
@@ -81,7 +81,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -94,7 +94,7 @@ def sync_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Unset, None, Interval] = UNSET,
@@ -102,12 +102,12 @@ def sync_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Unset, None, Interval]): An enumeration.
@@ -119,7 +119,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -147,7 +147,7 @@ def sync(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Unset, None, Interval] = UNSET,
@@ -155,12 +155,12 @@ def sync(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Unset, None, Interval]): An enumeration.
@@ -172,7 +172,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
     """
 
     return sync_detailed(
@@ -193,7 +193,7 @@ async def asyncio_detailed(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Unset, None, Interval] = UNSET,
@@ -201,12 +201,12 @@ async def asyncio_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Unset, None, Interval]): An enumeration.
@@ -218,7 +218,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -244,7 +244,7 @@ async def asyncio(
     symbol: str,
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
     sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Unset, None, Interval] = UNSET,
@@ -252,12 +252,12 @@ async def asyncio(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerSymbol]]:
+) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
         symbol (str):
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         exchange (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Unset, None, Interval]): An enumeration.
@@ -269,7 +269,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerSymbol]]
+        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
     """
 
     return (

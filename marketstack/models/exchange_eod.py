@@ -3,14 +3,15 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 import attr
 
 from ..models.currency import Currency
+from ..models.eod_price import EodPrice
 from ..models.timezone import Timezone
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="Exchange")
+T = TypeVar("T", bound="ExchangeEod")
 
 
 @attr.s(auto_attribs=True)
-class Exchange:
+class ExchangeEod:
     """
     Attributes:
         name (str):
@@ -20,6 +21,7 @@ class Exchange:
         country_code (str):
         city (str):
         website (str):
+        eod (List[EodPrice]):
         currency (Union[Unset, Currency]):
         timezone (Union[Unset, Timezone]):
     """
@@ -31,6 +33,7 @@ class Exchange:
     country_code: str
     city: str
     website: str
+    eod: List[EodPrice]
     currency: Union[Unset, Currency] = UNSET
     timezone: Union[Unset, Timezone] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
@@ -43,6 +46,12 @@ class Exchange:
         country_code = self.country_code
         city = self.city
         website = self.website
+        eod = []
+        for eod_item_data in self.eod:
+            eod_item = eod_item_data.to_dict()
+
+            eod.append(eod_item)
+
         currency: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.currency, Unset):
             currency = self.currency.to_dict()
@@ -62,6 +71,7 @@ class Exchange:
                 "country_code": country_code,
                 "city": city,
                 "website": website,
+                "eod": eod,
             }
         )
         if currency is not UNSET:
@@ -88,6 +98,13 @@ class Exchange:
 
         website = d.pop("website")
 
+        eod = []
+        _eod = d.pop("eod")
+        for eod_item_data in _eod:
+            eod_item = EodPrice.from_dict(eod_item_data)
+
+            eod.append(eod_item)
+
         _currency = d.pop("currency", UNSET)
         currency: Union[Unset, Currency]
         if isinstance(_currency, Unset):
@@ -102,7 +119,7 @@ class Exchange:
         else:
             timezone = Timezone.from_dict(_timezone)
 
-        exchange = cls(
+        exchange_eod = cls(
             name=name,
             acronym=acronym,
             mic=mic,
@@ -110,12 +127,13 @@ class Exchange:
             country_code=country_code,
             city=city,
             website=website,
+            eod=eod,
             currency=currency,
             timezone=timezone,
         )
 
-        exchange.additional_properties = d
-        return exchange
+        exchange_eod.additional_properties = d
+        return exchange_eod
 
     @property
     def additional_keys(self) -> List[str]:

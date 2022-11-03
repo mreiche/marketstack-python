@@ -4,17 +4,18 @@ import httpx
 
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.ticker import Ticker
+from ...models.response_exchange_eod import ResponseExchangeEod
 from ...types import UNSET, Response
 
 
 def _get_kwargs(
-    symbol: str,
+    mic: str,
+    date: str,
     *,
     client: Client,
     access_key: str,
 ) -> Dict[str, Any]:
-    url = "{}/tickers/{symbol}".format(client.base_url, symbol=symbol)
+    url = "{}/exchanges/{mic}/eod/{date}".format(client.base_url, mic=mic, date=date)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
@@ -36,9 +37,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, Ticker]]:
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
     if response.status_code == 200:
-        response_200 = Ticker.from_dict(response.json())
+        response_200 = ResponseExchangeEod.from_dict(response.json())
 
         return response_200
     if response.status_code == 422:
@@ -50,7 +51,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, Ticker]]:
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -60,23 +61,27 @@ def _build_response(
 
 
 def sync_detailed(
-    symbol: str,
+    mic: str,
+    date: str,
     *,
     client: Client,
     access_key: str,
-) -> Response[Union[HTTPValidationError, Ticker]]:
-    """Symbol
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod Date
 
     Args:
-        symbol (str):
+        mic (str):
+        date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
+            %Y-%m-%dT%H:%M:%S+%Z
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, Ticker]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
-        symbol=symbol,
+        mic=mic,
+        date=date,
         client=client,
         access_key=access_key,
     )
@@ -90,46 +95,54 @@ def sync_detailed(
 
 
 def sync(
-    symbol: str,
+    mic: str,
+    date: str,
     *,
     client: Client,
     access_key: str,
-) -> Optional[Union[HTTPValidationError, Ticker]]:
-    """Symbol
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod Date
 
     Args:
-        symbol (str):
+        mic (str):
+        date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
+            %Y-%m-%dT%H:%M:%S+%Z
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, Ticker]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     return sync_detailed(
-        symbol=symbol,
+        mic=mic,
+        date=date,
         client=client,
         access_key=access_key,
     ).parsed
 
 
 async def asyncio_detailed(
-    symbol: str,
+    mic: str,
+    date: str,
     *,
     client: Client,
     access_key: str,
-) -> Response[Union[HTTPValidationError, Ticker]]:
-    """Symbol
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod Date
 
     Args:
-        symbol (str):
+        mic (str):
+        date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
+            %Y-%m-%dT%H:%M:%S+%Z
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, Ticker]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
-        symbol=symbol,
+        mic=mic,
+        date=date,
         client=client,
         access_key=access_key,
     )
@@ -141,24 +154,28 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    symbol: str,
+    mic: str,
+    date: str,
     *,
     client: Client,
     access_key: str,
-) -> Optional[Union[HTTPValidationError, Ticker]]:
-    """Symbol
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod Date
 
     Args:
-        symbol (str):
+        mic (str):
+        date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
+            %Y-%m-%dT%H:%M:%S+%Z
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, Ticker]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     return (
         await asyncio_detailed(
-            symbol=symbol,
+            mic=mic,
+            date=date,
             client=client,
             access_key=access_key,
         )

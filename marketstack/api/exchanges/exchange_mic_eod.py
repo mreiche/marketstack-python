@@ -4,12 +4,13 @@ import httpx
 
 from ...client import Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_listmodels_dividend import ResponseListmodelsDividend
+from ...models.response_exchange_eod import ResponseExchangeEod
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
+    mic: str,
     *,
     client: Client,
     access_key: str,
@@ -20,7 +21,7 @@ def _get_kwargs(
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Dict[str, Any]:
-    url = "{}/dividends".format(client.base_url)
+    url = "{}/exchanges/{mic}/eod".format(client.base_url, mic=mic)
 
     headers: Dict[str, str] = client.get_headers()
     cookies: Dict[str, Any] = client.get_cookies()
@@ -58,9 +59,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
     if response.status_code == 200:
-        response_200 = ResponseListmodelsDividend.from_dict(response.json())
+        response_200 = ResponseExchangeEod.from_dict(response.json())
 
         return response_200
     if response.status_code == 422:
@@ -72,7 +73,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -82,6 +83,7 @@ def _build_response(
 
 
 def sync_detailed(
+    mic: str,
     *,
     client: Client,
     access_key: str,
@@ -91,10 +93,11 @@ def sync_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -106,10 +109,11 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
@@ -129,6 +133,7 @@ def sync_detailed(
 
 
 def sync(
+    mic: str,
     *,
     client: Client,
     access_key: str,
@@ -138,10 +143,11 @@ def sync(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -153,10 +159,11 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     return sync_detailed(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
@@ -169,6 +176,7 @@ def sync(
 
 
 async def asyncio_detailed(
+    mic: str,
     *,
     client: Client,
     access_key: str,
@@ -178,10 +186,11 @@ async def asyncio_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Response[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -193,10 +202,11 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
+        mic=mic,
         client=client,
         access_key=access_key,
         symbols=symbols,
@@ -214,6 +224,7 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    mic: str,
     *,
     client: Client,
     access_key: str,
@@ -223,10 +234,11 @@ async def asyncio(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
-    """Query
+) -> Optional[Union[HTTPValidationError, ResponseExchangeEod]]:
+    """Mic Eod
 
     Args:
+        mic (str):
         access_key (str):
         symbols (Union[Unset, None, str]):
         sort (Union[Unset, None, Sort]): An enumeration.
@@ -238,11 +250,12 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[HTTPValidationError, ResponseExchangeEod]]
     """
 
     return (
         await asyncio_detailed(
+            mic=mic,
             client=client,
             access_key=access_key,
             symbols=symbols,

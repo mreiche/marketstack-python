@@ -11,7 +11,7 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Dict[str, Any]:
@@ -67,14 +67,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Response[Union[HTTPValidationError, ResponseListmodelsTimezone]]:
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         limit (Union[Unset, None, int]):
         offset (Union[Unset, None, int]):
 
@@ -100,14 +100,14 @@ def sync_detailed(
 def sync(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Optional[Union[HTTPValidationError, ResponseListmodelsTimezone]]:
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         limit (Union[Unset, None, int]):
         offset (Union[Unset, None, int]):
 
@@ -126,14 +126,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Response[Union[HTTPValidationError, ResponseListmodelsTimezone]]:
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         limit (Union[Unset, None, int]):
         offset (Union[Unset, None, int]):
 
@@ -157,14 +157,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Client,
-    access_key: Union[Unset, None, str] = UNSET,
+    access_key: str,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
 ) -> Optional[Union[HTTPValidationError, ResponseListmodelsTimezone]]:
     """Query
 
     Args:
-        access_key (Union[Unset, None, str]):
+        access_key (str):
         limit (Union[Unset, None, int]):
         offset (Union[Unset, None, int]):
 

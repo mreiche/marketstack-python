@@ -3,14 +3,15 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 import attr
 
 from ..models.currency import Currency
+from ..models.interval_price import IntervalPrice
 from ..models.timezone import Timezone
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="Exchange")
+T = TypeVar("T", bound="ExchangeIntraday")
 
 
 @attr.s(auto_attribs=True)
-class Exchange:
+class ExchangeIntraday:
     """
     Attributes:
         name (str):
@@ -20,6 +21,7 @@ class Exchange:
         country_code (str):
         city (str):
         website (str):
+        intraday (List[IntervalPrice]):
         currency (Union[Unset, Currency]):
         timezone (Union[Unset, Timezone]):
     """
@@ -31,6 +33,7 @@ class Exchange:
     country_code: str
     city: str
     website: str
+    intraday: List[IntervalPrice]
     currency: Union[Unset, Currency] = UNSET
     timezone: Union[Unset, Timezone] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
@@ -43,6 +46,12 @@ class Exchange:
         country_code = self.country_code
         city = self.city
         website = self.website
+        intraday = []
+        for intraday_item_data in self.intraday:
+            intraday_item = intraday_item_data.to_dict()
+
+            intraday.append(intraday_item)
+
         currency: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.currency, Unset):
             currency = self.currency.to_dict()
@@ -62,6 +71,7 @@ class Exchange:
                 "country_code": country_code,
                 "city": city,
                 "website": website,
+                "intraday": intraday,
             }
         )
         if currency is not UNSET:
@@ -88,6 +98,13 @@ class Exchange:
 
         website = d.pop("website")
 
+        intraday = []
+        _intraday = d.pop("intraday")
+        for intraday_item_data in _intraday:
+            intraday_item = IntervalPrice.from_dict(intraday_item_data)
+
+            intraday.append(intraday_item)
+
         _currency = d.pop("currency", UNSET)
         currency: Union[Unset, Currency]
         if isinstance(_currency, Unset):
@@ -102,7 +119,7 @@ class Exchange:
         else:
             timezone = Timezone.from_dict(_timezone)
 
-        exchange = cls(
+        exchange_intraday = cls(
             name=name,
             acronym=acronym,
             mic=mic,
@@ -110,12 +127,13 @@ class Exchange:
             country_code=country_code,
             city=city,
             website=website,
+            intraday=intraday,
             currency=currency,
             timezone=timezone,
         )
 
-        exchange.additional_properties = d
-        return exchange
+        exchange_intraday.additional_properties = d
+        return exchange_intraday
 
     @property
     def additional_keys(self) -> List[str]:

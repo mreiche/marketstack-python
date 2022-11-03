@@ -3,24 +3,24 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 import attr
 
 from ..models.error import Error
+from ..models.exchange_tickers import ExchangeTickers
 from ..models.pagination import Pagination
-from ..models.ticker_symbol import TickerSymbol
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ResponseTickerSymbol")
+T = TypeVar("T", bound="ResponseExchangeTickers")
 
 
 @attr.s(auto_attribs=True)
-class ResponseTickerSymbol:
+class ResponseExchangeTickers:
     """
     Attributes:
         pagination (Union[Unset, Pagination]):
-        data (Union[Unset, TickerSymbol]):
+        data (Union[Unset, ExchangeTickers]):
         error (Union[Unset, Error]):
     """
 
     pagination: Union[Unset, Pagination] = UNSET
-    data: Union[Unset, TickerSymbol] = UNSET
+    data: Union[Unset, ExchangeTickers] = UNSET
     error: Union[Unset, Error] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
@@ -60,11 +60,11 @@ class ResponseTickerSymbol:
             pagination = Pagination.from_dict(_pagination)
 
         _data = d.pop("data", UNSET)
-        data: Union[Unset, TickerSymbol]
+        data: Union[Unset, ExchangeTickers]
         if isinstance(_data, Unset):
             data = UNSET
         else:
-            data = TickerSymbol.from_dict(_data)
+            data = ExchangeTickers.from_dict(_data)
 
         _error = d.pop("error", UNSET)
         error: Union[Unset, Error]
@@ -73,14 +73,14 @@ class ResponseTickerSymbol:
         else:
             error = Error.from_dict(_error)
 
-        response_ticker_symbol = cls(
+        response_exchange_tickers = cls(
             pagination=pagination,
             data=data,
             error=error,
         )
 
-        response_ticker_symbol.additional_properties = d
-        return response_ticker_symbol
+        response_exchange_tickers.additional_properties = d
+        return response_exchange_tickers
 
     @property
     def additional_keys(self) -> List[str]:

@@ -21,6 +21,7 @@ class IntervalPrice:
         exchange (str):
         volume (Union[Unset, float]):
         close (Union[Unset, float]):
+        last (Union[Unset, float]):
     """
 
     date: datetime.datetime
@@ -31,6 +32,7 @@ class IntervalPrice:
     exchange: str
     volume: Union[Unset, float] = UNSET
     close: Union[Unset, float] = UNSET
+    last: Union[Unset, float] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -43,6 +45,7 @@ class IntervalPrice:
         exchange = self.exchange
         volume = self.volume
         close = self.close
+        last = self.last
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -60,6 +63,8 @@ class IntervalPrice:
             field_dict["volume"] = volume
         if close is not UNSET:
             field_dict["close"] = close
+        if last is not UNSET:
+            field_dict["last"] = last
 
         return field_dict
 
@@ -82,6 +87,8 @@ class IntervalPrice:
 
         close = d.pop("close", UNSET)
 
+        last = d.pop("last", UNSET)
+
         interval_price = cls(
             date=date,
             symbol=symbol,
@@ -91,6 +98,7 @@ class IntervalPrice:
             exchange=exchange,
             volume=volume,
             close=close,
+            last=last,
         )
 
         interval_price.additional_properties = d
