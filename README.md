@@ -66,7 +66,7 @@ df = pd.DataFrame(map(lambda x: x.__dict__, response.data))
 1. Setup your marketstack API key in `tests/test.env`
 2. Run the tests via *pytest*
    ```shell
-   pytest tests
+   PYTHONPATH="." pytest --cov=marketstack tests/
    ```
 
 ### Release update
