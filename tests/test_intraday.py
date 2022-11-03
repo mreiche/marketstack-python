@@ -3,6 +3,7 @@ from datetime import datetime
 
 from marketstack.api.intraday import intraday, intraday_date, intraday_latest
 from marketstack.client import Client
+from marketstack.models import Interval
 from tests.setup import create_client, this_january, this_february, day_format
 
 client: Client
@@ -20,7 +21,7 @@ def test_intraday():
         symbols="AAPL,AMZN",
         date_from=this_january,
         date_to=this_february,
-        interval="1hour",
+        interval=Interval.HOUR1,
         limit=10,
     )
     aapl = None

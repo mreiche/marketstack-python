@@ -16,7 +16,7 @@ def _get_kwargs(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -34,19 +34,9 @@ def _get_kwargs(
 
     params["exchange"] = exchange
 
-    json_sort: Union[None, Unset, str]
-    if isinstance(sort, Unset):
-        json_sort = UNSET
-    elif sort is None:
-        json_sort = None
-
-    elif isinstance(sort, Sort):
-        json_sort = UNSET
-        if not isinstance(sort, Unset):
-            json_sort = sort.value
-
-    else:
-        json_sort = sort
+    json_sort: Union[Unset, None, str] = UNSET
+    if not isinstance(sort, Unset):
+        json_sort = sort.value if sort else None
 
     params["sort"] = json_sort
 
@@ -113,7 +103,7 @@ def sync_detailed(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -125,7 +115,7 @@ def sync_detailed(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -163,7 +153,7 @@ def sync(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -175,7 +165,7 @@ def sync(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -206,7 +196,7 @@ async def asyncio_detailed(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -218,7 +208,7 @@ async def asyncio_detailed(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -254,7 +244,7 @@ async def asyncio(
     access_key: str,
     symbols: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
@@ -266,7 +256,7 @@ async def asyncio(
         access_key (str):
         symbols (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or

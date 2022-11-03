@@ -2,15 +2,15 @@ from enum import Enum
 
 
 class Interval(str, Enum):
-    VALUE_0 = "1min"
-    VALUE_1 = "5min"
-    VALUE_2 = "10min"
-    VALUE_3 = "30min"
-    VALUE_4 = "1hour"
-    VALUE_5 = "3hour"
-    VALUE_6 = "6hour"
-    VALUE_7 = "12hour"
-    VALUE_8 = "24hour"
+    MIN1 = "1min"
+    MIN5 = "5min"
+    MIN10 = "10min"
+    MIN30 = "30min"
+    HOUR1 = "1hour"
+    HOUR3 = "3hour"
+    HOUR6 = "6hour"
+    HOUR12 = "12hour"
+    HOUR24 = "24hour"
 
     def __str__(self) -> str:
         return str(self.value)

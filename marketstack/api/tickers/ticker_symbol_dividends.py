@@ -15,7 +15,7 @@ def _get_kwargs(
     *,
     client: Client,
     access_key: str,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
 ) -> Dict[str, Any]:
@@ -27,19 +27,9 @@ def _get_kwargs(
     params: Dict[str, Any] = {}
     params["access_key"] = access_key
 
-    json_sort: Union[None, Unset, str]
-    if isinstance(sort, Unset):
-        json_sort = UNSET
-    elif sort is None:
-        json_sort = None
-
-    elif isinstance(sort, Sort):
-        json_sort = UNSET
-        if not isinstance(sort, Unset):
-            json_sort = sort.value
-
-    else:
-        json_sort = sort
+    json_sort: Union[Unset, None, str] = UNSET
+    if not isinstance(sort, Unset):
+        json_sort = sort.value if sort else None
 
     params["sort"] = json_sort
 
@@ -101,7 +91,7 @@ def sync_detailed(
     *,
     client: Client,
     access_key: str,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
@@ -110,7 +100,7 @@ def sync_detailed(
     Args:
         symbol (str):
         access_key (str):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -142,7 +132,7 @@ def sync(
     *,
     client: Client,
     access_key: str,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
@@ -151,7 +141,7 @@ def sync(
     Args:
         symbol (str):
         access_key (str):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -176,7 +166,7 @@ async def asyncio_detailed(
     *,
     client: Client,
     access_key: str,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
@@ -185,7 +175,7 @@ async def asyncio_detailed(
     Args:
         symbol (str):
         access_key (str):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
@@ -215,7 +205,7 @@ async def asyncio(
     *,
     client: Client,
     access_key: str,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
@@ -224,7 +214,7 @@ async def asyncio(
     Args:
         symbol (str):
         access_key (str):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
         date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
