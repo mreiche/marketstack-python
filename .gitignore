@@ -2,3 +2,5 @@
 venv
 *.env
 dist/
+.coverage
+build/

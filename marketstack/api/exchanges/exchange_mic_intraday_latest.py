@@ -5,24 +5,16 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.interval import Interval
 from ...models.response_exchange_intraday import ResponseExchangeIntraday
-from ...models.sort import Sort
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
 def _get_kwargs(
     mic: str,
     *,
     client: Client,
-    access_key: str,
     symbols: str,
-    interval: Union[Interval, None, Unset, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
-    date_from: Union[Unset, None, str] = UNSET,
-    date_to: Union[Unset, None, str] = UNSET,
-    limit: Union[Unset, None, int] = UNSET,
-    offset: Union[Unset, None, int] = UNSET,
+    access_key: str,
 ) -> Dict[str, Any]:
     url = "{}/exchanges/{mic}/intraday/latest".format(client.base_url, mic=mic)
 
@@ -30,49 +22,9 @@ def _get_kwargs(
     cookies: Dict[str, Any] = client.get_cookies()
 
     params: Dict[str, Any] = {}
-    params["access_key"] = access_key
-
     params["symbols"] = symbols
 
-    json_interval: Union[None, Unset, str]
-    if isinstance(interval, Unset):
-        json_interval = UNSET
-    elif interval is None:
-        json_interval = None
-
-    elif isinstance(interval, Interval):
-        json_interval = UNSET
-        if not isinstance(interval, Unset):
-            json_interval = interval.value
-
-    else:
-        json_interval = interval
-
-    params["interval"] = json_interval
-
-    json_sort: Union[None, Unset, str]
-    if isinstance(sort, Unset):
-        json_sort = UNSET
-    elif sort is None:
-        json_sort = None
-
-    elif isinstance(sort, Sort):
-        json_sort = UNSET
-        if not isinstance(sort, Unset):
-            json_sort = sort.value
-
-    else:
-        json_sort = sort
-
-    params["sort"] = json_sort
-
-    params["date_from"] = date_from
-
-    params["date_to"] = date_to
-
-    params["limit"] = limit
-
-    params["offset"] = offset
+    params["access_key"] = access_key
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -127,29 +79,15 @@ def sync_detailed(
     mic: str,
     *,
     client: Client,
-    access_key: str,
     symbols: str,
-    interval: Union[Interval, None, Unset, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
-    date_from: Union[Unset, None, str] = UNSET,
-    date_to: Union[Unset, None, str] = UNSET,
-    limit: Union[Unset, None, int] = UNSET,
-    offset: Union[Unset, None, int] = UNSET,
+    access_key: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
     """Mic Intraday Latest
 
     Args:
         mic (str):
-        access_key (str):
         symbols (str):
-        interval (Union[Interval, None, Unset, str]):
-        sort (Union[None, Sort, Unset, str]):
-        date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        limit (Union[Unset, None, int]):
-        offset (Union[Unset, None, int]):
+        access_key (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
@@ -158,14 +96,8 @@ def sync_detailed(
     kwargs = _get_kwargs(
         mic=mic,
         client=client,
-        access_key=access_key,
         symbols=symbols,
-        interval=interval,
-        sort=sort,
-        date_from=date_from,
-        date_to=date_to,
-        limit=limit,
-        offset=offset,
+        access_key=access_key,
     )
 
     response = httpx.request(
@@ -180,29 +112,15 @@ def sync(
     mic: str,
     *,
     client: Client,
-    access_key: str,
     symbols: str,
-    interval: Union[Interval, None, Unset, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
-    date_from: Union[Unset, None, str] = UNSET,
-    date_to: Union[Unset, None, str] = UNSET,
-    limit: Union[Unset, None, int] = UNSET,
-    offset: Union[Unset, None, int] = UNSET,
+    access_key: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
     """Mic Intraday Latest
 
     Args:
         mic (str):
-        access_key (str):
         symbols (str):
-        interval (Union[Interval, None, Unset, str]):
-        sort (Union[None, Sort, Unset, str]):
-        date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        limit (Union[Unset, None, int]):
-        offset (Union[Unset, None, int]):
+        access_key (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
@@ -211,14 +129,8 @@ def sync(
     return sync_detailed(
         mic=mic,
         client=client,
-        access_key=access_key,
         symbols=symbols,
-        interval=interval,
-        sort=sort,
-        date_from=date_from,
-        date_to=date_to,
-        limit=limit,
-        offset=offset,
+        access_key=access_key,
     ).parsed
 
 
@@ -226,29 +138,15 @@ async def asyncio_detailed(
     mic: str,
     *,
     client: Client,
-    access_key: str,
     symbols: str,
-    interval: Union[Interval, None, Unset, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
-    date_from: Union[Unset, None, str] = UNSET,
-    date_to: Union[Unset, None, str] = UNSET,
-    limit: Union[Unset, None, int] = UNSET,
-    offset: Union[Unset, None, int] = UNSET,
+    access_key: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
     """Mic Intraday Latest
 
     Args:
         mic (str):
-        access_key (str):
         symbols (str):
-        interval (Union[Interval, None, Unset, str]):
-        sort (Union[None, Sort, Unset, str]):
-        date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        limit (Union[Unset, None, int]):
-        offset (Union[Unset, None, int]):
+        access_key (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
@@ -257,14 +155,8 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         mic=mic,
         client=client,
-        access_key=access_key,
         symbols=symbols,
-        interval=interval,
-        sort=sort,
-        date_from=date_from,
-        date_to=date_to,
-        limit=limit,
-        offset=offset,
+        access_key=access_key,
     )
 
     async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
@@ -277,29 +169,15 @@ async def asyncio(
     mic: str,
     *,
     client: Client,
-    access_key: str,
     symbols: str,
-    interval: Union[Interval, None, Unset, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
-    date_from: Union[Unset, None, str] = UNSET,
-    date_to: Union[Unset, None, str] = UNSET,
-    limit: Union[Unset, None, int] = UNSET,
-    offset: Union[Unset, None, int] = UNSET,
+    access_key: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
     """Mic Intraday Latest
 
     Args:
         mic (str):
-        access_key (str):
         symbols (str):
-        interval (Union[Interval, None, Unset, str]):
-        sort (Union[None, Sort, Unset, str]):
-        date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        date_to (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
-            ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
-        limit (Union[Unset, None, int]):
-        offset (Union[Unset, None, int]):
+        access_key (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
@@ -309,13 +187,7 @@ async def asyncio(
         await asyncio_detailed(
             mic=mic,
             client=client,
-            access_key=access_key,
             symbols=symbols,
-            interval=interval,
-            sort=sort,
-            date_from=date_from,
-            date_to=date_to,
-            limit=limit,
-            offset=offset,
+            access_key=access_key,
         )
     ).parsed

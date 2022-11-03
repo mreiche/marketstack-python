@@ -2,8 +2,7 @@ import os
 
 from marketstack.api.eod import eod, eod_date, eod_latest
 from marketstack.client import Client
-
-from tests.setup import create_client, date_from, date_to
+from tests.setup import create_client, this_january, this_february, day_format
 
 client: Client
 
@@ -18,8 +17,8 @@ def test_eod():
         client=client,
         access_key=os.getenv("MARKETSTACK_API_KEY"),
         symbols="AAPL,AMZN",
-        date_from=date_from,
-        date_to=date_to,
+        date_from=this_january,
+        date_to=this_february,
         limit=10,
     )
     aapl = None
@@ -51,7 +50,7 @@ def test_eod_latest():
 def test_eod_date():
     response = eod_date.sync(
         symbols="AAPL",
-        date=date_from,
+        date=this_january,
         client=client,
         access_key=os.getenv("MARKETSTACK_API_KEY"),
         limit=1,
@@ -61,3 +60,4 @@ def test_eod_date():
     assert response.pagination.total == 1
     assert response.data[0].symbol == "AAPL"
     assert response.data[0].open_ > 0
+    assert response.data[0].date.strftime(day_format) == this_january

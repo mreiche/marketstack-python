@@ -3,8 +3,7 @@ from datetime import datetime
 
 from marketstack.api.intraday import intraday, intraday_date, intraday_latest
 from marketstack.client import Client
-
-from tests.setup import create_client, date_from, date_to
+from tests.setup import create_client, this_january, this_february, day_format
 
 client: Client
 
@@ -19,8 +18,8 @@ def test_intraday():
         client=client,
         access_key=os.getenv("MARKETSTACK_API_KEY"),
         symbols="AAPL,AMZN",
-        date_from=date_from,
-        date_to=date_to,
+        date_from=this_january,
+        date_to=this_february,
         interval="1hour",
         limit=10,
     )
@@ -57,7 +56,7 @@ def test_intraday_latest():
 def test_intraday_date():
     response = intraday_date.sync(
         symbols="AAPL",
-        date=date_from,
+        date=this_january,
         client=client,
         access_key=os.getenv("MARKETSTACK_API_KEY"),
         limit=1,
@@ -67,3 +66,4 @@ def test_intraday_date():
     assert response.pagination.total > 0
     assert response.data[0].symbol == "AAPL"
     assert response.data[0].open_ > 0
+    assert response.data[0].date.strftime(day_format) == this_january

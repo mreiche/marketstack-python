@@ -1,5 +1,5 @@
 # marketstack-python
-Python OpenAPI implementation of the [Marketstack API](https://marketstack.com/documentation) based on the [OpenAPI spec](https://github.com/mreiche/marketstack-openapi) (*not fully tested*).
+Inofficial Python OpenAPI implementation of the [marketstack API](https://marketstack.com/documentation) based on the [marketstack OpenAPI spec](https://github.com/mreiche/marketstack-openapi).
 
 ## Usage
 
@@ -21,7 +21,8 @@ protocol = "https" if tls_support == "1" else "http"
 client = Client(base_url=f"{protocol}://api.marketstack.com/v1")
 ```
 
-### Import and call operations
+### Call operations
+
 ```python
 from marketstack.api.eod import eod
 import os
@@ -33,6 +34,8 @@ response = eod.sync(
     limit=10,
 )
 ```
+
+All endpoint features are implemented and tested. For examples see the repository's `tests/` directory.
 
 ### Error handling
 ```python

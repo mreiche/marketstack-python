@@ -14,6 +14,7 @@ def _get_kwargs(
     *,
     client: Client,
     access_key: str,
+    symbols: str,
 ) -> Dict[str, Any]:
     url = "{}/exchanges/{mic}/eod/latest".format(client.base_url, mic=mic)
 
@@ -22,6 +23,8 @@ def _get_kwargs(
 
     params: Dict[str, Any] = {}
     params["access_key"] = access_key
+
+    params["symbols"] = symbols
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -77,12 +80,14 @@ def sync_detailed(
     *,
     client: Client,
     access_key: str,
+    symbols: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
         mic (str):
         access_key (str):
+        symbols (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
@@ -92,6 +97,7 @@ def sync_detailed(
         mic=mic,
         client=client,
         access_key=access_key,
+        symbols=symbols,
     )
 
     response = httpx.request(
@@ -107,12 +113,14 @@ def sync(
     *,
     client: Client,
     access_key: str,
+    symbols: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
         mic (str):
         access_key (str):
+        symbols (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
@@ -122,6 +130,7 @@ def sync(
         mic=mic,
         client=client,
         access_key=access_key,
+        symbols=symbols,
     ).parsed
 
 
@@ -130,12 +139,14 @@ async def asyncio_detailed(
     *,
     client: Client,
     access_key: str,
+    symbols: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
         mic (str):
         access_key (str):
+        symbols (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
@@ -145,6 +156,7 @@ async def asyncio_detailed(
         mic=mic,
         client=client,
         access_key=access_key,
+        symbols=symbols,
     )
 
     async with httpx.AsyncClient(verify=client.verify_ssl) as _client:
@@ -158,12 +170,14 @@ async def asyncio(
     *,
     client: Client,
     access_key: str,
+    symbols: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
         mic (str):
         access_key (str):
+        symbols (str):
 
     Returns:
         Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
@@ -174,5 +188,6 @@ async def asyncio(
             mic=mic,
             client=client,
             access_key=access_key,
+            symbols=symbols,
         )
     ).parsed

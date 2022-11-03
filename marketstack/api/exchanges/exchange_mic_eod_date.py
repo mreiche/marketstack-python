@@ -14,6 +14,7 @@ def _get_kwargs(
     date: str,
     *,
     client: Client,
+    symbols: str,
     access_key: str,
 ) -> Dict[str, Any]:
     url = "{}/exchanges/{mic}/eod/{date}".format(client.base_url, mic=mic, date=date)
@@ -22,6 +23,8 @@ def _get_kwargs(
     cookies: Dict[str, Any] = client.get_cookies()
 
     params: Dict[str, Any] = {}
+    params["symbols"] = symbols
+
     params["access_key"] = access_key
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
@@ -78,6 +81,7 @@ def sync_detailed(
     date: str,
     *,
     client: Client,
+    symbols: str,
     access_key: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Date
@@ -86,6 +90,7 @@ def sync_detailed(
         mic (str):
         date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
             %Y-%m-%dT%H:%M:%S+%Z
+        symbols (str):
         access_key (str):
 
     Returns:
@@ -96,6 +101,7 @@ def sync_detailed(
         mic=mic,
         date=date,
         client=client,
+        symbols=symbols,
         access_key=access_key,
     )
 
@@ -112,6 +118,7 @@ def sync(
     date: str,
     *,
     client: Client,
+    symbols: str,
     access_key: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Date
@@ -120,6 +127,7 @@ def sync(
         mic (str):
         date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
             %Y-%m-%dT%H:%M:%S+%Z
+        symbols (str):
         access_key (str):
 
     Returns:
@@ -130,6 +138,7 @@ def sync(
         mic=mic,
         date=date,
         client=client,
+        symbols=symbols,
         access_key=access_key,
     ).parsed
 
@@ -139,6 +148,7 @@ async def asyncio_detailed(
     date: str,
     *,
     client: Client,
+    symbols: str,
     access_key: str,
 ) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Date
@@ -147,6 +157,7 @@ async def asyncio_detailed(
         mic (str):
         date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
             %Y-%m-%dT%H:%M:%S+%Z
+        symbols (str):
         access_key (str):
 
     Returns:
@@ -157,6 +168,7 @@ async def asyncio_detailed(
         mic=mic,
         date=date,
         client=client,
+        symbols=symbols,
         access_key=access_key,
     )
 
@@ -171,6 +183,7 @@ async def asyncio(
     date: str,
     *,
     client: Client,
+    symbols: str,
     access_key: str,
 ) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
     """Mic Eod Date
@@ -179,6 +192,7 @@ async def asyncio(
         mic (str):
         date (str): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or ISO-8601
             %Y-%m-%dT%H:%M:%S+%Z
+        symbols (str):
         access_key (str):
 
     Returns:
@@ -190,6 +204,7 @@ async def asyncio(
             mic=mic,
             date=date,
             client=client,
+            symbols=symbols,
             access_key=access_key,
         )
     ).parsed

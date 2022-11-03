@@ -10,7 +10,7 @@ setup(
     description="Inofficial Marketstack OpenAPI Python client",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.3",
+    version="0.4",
     url="https://github.com/mreiche/marketstack-python",
     author="Mike Reiche",
     py_modules=["marketstack"],
