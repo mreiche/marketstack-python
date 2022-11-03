@@ -17,7 +17,7 @@ def _get_kwargs(
     client: Client,
     access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -34,19 +34,9 @@ def _get_kwargs(
 
     params["exchange"] = exchange
 
-    json_sort: Union[None, Unset, str]
-    if isinstance(sort, Unset):
-        json_sort = UNSET
-    elif sort is None:
-        json_sort = None
-
-    elif isinstance(sort, Sort):
-        json_sort = UNSET
-        if not isinstance(sort, Unset):
-            json_sort = sort.value
-
-    else:
-        json_sort = sort
+    json_sort: Union[Unset, None, str] = UNSET
+    if not isinstance(sort, Unset):
+        json_sort = sort.value if sort else None
 
     params["sort"] = json_sort
 
@@ -129,7 +119,7 @@ def sync_detailed(
     client: Client,
     access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -142,7 +132,7 @@ def sync_detailed(
         symbol (str):
         access_key (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -182,7 +172,7 @@ def sync(
     client: Client,
     access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -195,7 +185,7 @@ def sync(
         symbol (str):
         access_key (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -228,7 +218,7 @@ async def asyncio_detailed(
     client: Client,
     access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -241,7 +231,7 @@ async def asyncio_detailed(
         symbol (str):
         access_key (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
@@ -279,7 +269,7 @@ async def asyncio(
     client: Client,
     access_key: str,
     exchange: Union[Unset, None, str] = UNSET,
-    sort: Union[None, Sort, Unset, str] = UNSET,
+    sort: Union[Unset, None, Sort] = UNSET,
     interval: Union[Interval, None, Unset, str] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
@@ -292,7 +282,7 @@ async def asyncio(
         symbol (str):
         access_key (str):
         exchange (Union[Unset, None, str]):
-        sort (Union[None, Sort, Unset, str]):
+        sort (Union[Unset, None, Sort]): An enumeration.
         interval (Union[Interval, None, Unset, str]):
         date_from (Union[Unset, None, str]): Date in the formats %Y-%m-%d, %Y-%m-%d %H:%M:%S or
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
