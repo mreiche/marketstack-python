@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ...client import Client
+from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
 from ...models.response_listmodels_ticker import ResponseListmodelsTicker
 from ...types import UNSET, Response, Unset
@@ -47,11 +48,23 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     if response.status_code == 200:
         response_200 = ResponseListmodelsTicker.from_dict(response.json())
 
         return response_200
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -61,7 +74,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -78,7 +91,7 @@ def sync_detailed(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     """Query
 
     Args:
@@ -89,7 +102,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsTicker]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]
     """
 
     kwargs = _get_kwargs(
@@ -117,7 +130,7 @@ def sync(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     """Query
 
     Args:
@@ -128,7 +141,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsTicker]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]
     """
 
     return sync_detailed(
@@ -149,7 +162,7 @@ async def asyncio_detailed(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     """Query
 
     Args:
@@ -160,7 +173,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsTicker]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]
     """
 
     kwargs = _get_kwargs(
@@ -186,7 +199,7 @@ async def asyncio(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsTicker]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]:
     """Query
 
     Args:
@@ -197,7 +210,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsTicker]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsTicker]]
     """
 
     return (

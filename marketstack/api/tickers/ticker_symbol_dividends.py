@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ...client import Client
+from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
 from ...models.response_listmodels_dividend import ResponseListmodelsDividend
 from ...models.sort import Sort
@@ -50,11 +51,23 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     if response.status_code == 200:
         response_200 = ResponseListmodelsDividend.from_dict(response.json())
 
         return response_200
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -64,7 +77,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -81,7 +94,7 @@ def sync_detailed(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     """Symbol Dividends
 
     Args:
@@ -94,7 +107,7 @@ def sync_detailed(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]
     """
 
     kwargs = _get_kwargs(
@@ -122,7 +135,7 @@ def sync(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     """Symbol Dividends
 
     Args:
@@ -135,7 +148,7 @@ def sync(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]
     """
 
     return sync_detailed(
@@ -156,7 +169,7 @@ async def asyncio_detailed(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     """Symbol Dividends
 
     Args:
@@ -169,7 +182,7 @@ async def asyncio_detailed(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]
     """
 
     kwargs = _get_kwargs(
@@ -195,7 +208,7 @@ async def asyncio(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsDividend]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]:
     """Symbol Dividends
 
     Args:
@@ -208,7 +221,7 @@ async def asyncio(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsDividend]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsDividend]]
     """
 
     return (

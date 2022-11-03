@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ...client import Client
+from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
 from ...models.interval import Interval
 from ...models.response_ticker_intraday import ResponseTickerIntraday
@@ -67,11 +68,23 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     if response.status_code == 200:
         response_200 = ResponseTickerIntraday.from_dict(response.json())
 
         return response_200
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -81,7 +94,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -102,7 +115,7 @@ def sync_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
@@ -119,7 +132,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -155,7 +168,7 @@ def sync(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
@@ -172,7 +185,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]
     """
 
     return sync_detailed(
@@ -201,7 +214,7 @@ async def asyncio_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
@@ -218,7 +231,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -252,7 +265,7 @@ async def asyncio(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[HTTPValidationError, ResponseTickerIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]:
     """Symbol Intraday
 
     Args:
@@ -269,7 +282,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseTickerIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseTickerIntraday]]
     """
 
     return (

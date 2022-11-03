@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ...client import Client
+from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
 from ...models.response_listmodels_interval_price import ResponseListmodelsIntervalPrice
 from ...types import UNSET, Response
@@ -39,11 +40,25 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     if response.status_code == 200:
         response_200 = ResponseListmodelsIntervalPrice.from_dict(response.json())
 
         return response_200
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -53,7 +68,9 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -68,7 +85,9 @@ def sync_detailed(
     *,
     client: Client,
     access_key: str,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     """Symbol Intraday Date
 
     Args:
@@ -78,7 +97,7 @@ def sync_detailed(
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]]
     """
 
     kwargs = _get_kwargs(
@@ -102,7 +121,9 @@ def sync(
     *,
     client: Client,
     access_key: str,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     """Symbol Intraday Date
 
     Args:
@@ -112,7 +133,7 @@ def sync(
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]]
     """
 
     return sync_detailed(
@@ -129,7 +150,9 @@ async def asyncio_detailed(
     *,
     client: Client,
     access_key: str,
-) -> Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     """Symbol Intraday Date
 
     Args:
@@ -139,7 +162,7 @@ async def asyncio_detailed(
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]]
     """
 
     kwargs = _get_kwargs(
@@ -161,7 +184,9 @@ async def asyncio(
     *,
     client: Client,
     access_key: str,
-) -> Optional[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]
+]:
     """Symbol Intraday Date
 
     Args:
@@ -171,7 +196,7 @@ async def asyncio(
         access_key (str):
 
     Returns:
-        Response[Union[HTTPValidationError, ResponseListmodelsIntervalPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsIntervalPrice]]
     """
 
     return (

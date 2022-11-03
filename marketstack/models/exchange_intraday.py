@@ -18,10 +18,10 @@ class ExchangeIntraday:
         acronym (str):
         mic (str):
         country (str):
-        country_code (str):
         city (str):
         website (str):
         intraday (List[IntervalPrice]):
+        country_code (Union[Unset, str]):
         currency (Union[Unset, Currency]):
         timezone (Union[Unset, Timezone]):
     """
@@ -30,10 +30,10 @@ class ExchangeIntraday:
     acronym: str
     mic: str
     country: str
-    country_code: str
     city: str
     website: str
     intraday: List[IntervalPrice]
+    country_code: Union[Unset, str] = UNSET
     currency: Union[Unset, Currency] = UNSET
     timezone: Union[Unset, Timezone] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
@@ -43,7 +43,6 @@ class ExchangeIntraday:
         acronym = self.acronym
         mic = self.mic
         country = self.country
-        country_code = self.country_code
         city = self.city
         website = self.website
         intraday = []
@@ -52,6 +51,7 @@ class ExchangeIntraday:
 
             intraday.append(intraday_item)
 
+        country_code = self.country_code
         currency: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.currency, Unset):
             currency = self.currency.to_dict()
@@ -68,12 +68,13 @@ class ExchangeIntraday:
                 "acronym": acronym,
                 "mic": mic,
                 "country": country,
-                "country_code": country_code,
                 "city": city,
                 "website": website,
                 "intraday": intraday,
             }
         )
+        if country_code is not UNSET:
+            field_dict["country_code"] = country_code
         if currency is not UNSET:
             field_dict["currency"] = currency
         if timezone is not UNSET:
@@ -92,8 +93,6 @@ class ExchangeIntraday:
 
         country = d.pop("country")
 
-        country_code = d.pop("country_code")
-
         city = d.pop("city")
 
         website = d.pop("website")
@@ -104,6 +103,8 @@ class ExchangeIntraday:
             intraday_item = IntervalPrice.from_dict(intraday_item_data)
 
             intraday.append(intraday_item)
+
+        country_code = d.pop("country_code", UNSET)
 
         _currency = d.pop("currency", UNSET)
         currency: Union[Unset, Currency]
@@ -124,10 +125,10 @@ class ExchangeIntraday:
             acronym=acronym,
             mic=mic,
             country=country,
-            country_code=country_code,
             city=city,
             website=website,
             intraday=intraday,
+            country_code=country_code,
             currency=currency,
             timezone=timezone,
         )

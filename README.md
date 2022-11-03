@@ -1,5 +1,5 @@
-# python-marketstack
-Python OpenAPI implementation of the [Marketstack API](https://marketstack.com/documentation) based on https://github.com/mreiche/marketstack-openapi (*not yet published nor fully implemented*).
+# marketstack-python
+Python OpenAPI implementation of the [Marketstack API](https://marketstack.com/documentation) based on the [OpenAPI spec](https://github.com/mreiche/marketstack-openapi) (*not fully tested*).
 
 ## Usage
 
@@ -34,17 +34,40 @@ response = eod.sync(
 )
 ```
 
-## Developers
+### Error handling
+```python
+from marketstack.models import ErrorCode, ErrorResponse
+
+assert isinstance(response, ErrorResponse)
+assert response.error.code == ErrorCode.FUNCTION_ACCESS_RESTRICTED
+```
+
+### Map to Pandas dataframe
+```python
+import pandas as pd
+
+df = pd.DataFrame(map(lambda x: x.__dict__, response.data))
+```
+
+## Developers area
 
 ### Generate the client
-Install the OpenAPI client generator
-```shell
-pip install openapi-python-client
-```
-Regenerate the client
-```shell
-./regenerate.sh
-```
+1. Install the OpenAPI client generator
+   ```shell
+   pip install openapi-python-client
+   ```
+2. Regenerate the client
+   ```shell
+   ./regenerate.sh
+   ```
+
+### Run the tests
+
+1. Setup your marketstack API key in `tests/test.env`
+2. Run the tests via *pytest*
+   ```shell
+   pytest tests
+   ```
 
 ### Release update
 1. Update version in `setup.py`
