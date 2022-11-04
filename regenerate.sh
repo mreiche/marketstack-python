@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-rm -rf marketstack
-openapi-python-client generate --path ../marketstack-openapi/marketstack-openapi.json --meta none
-mv marketstack_open_api_client marketstack
+openapi-python-client update --path ../marketstack-openapi/marketstack-openapi.json --meta none --config generator-config.yml
+PYTHONPATH="." pytest tests/test_models.py
