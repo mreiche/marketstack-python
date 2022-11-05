@@ -80,7 +80,7 @@ df = pd.DataFrame(map(lambda x: x.__dict__, response.data))
     ```
 3. Publish library
     ```shell
-    twine upload dist/{packaged file}.tar.gz
+    twine upload dist/marketstack-[version].tar.gz
     ```
 
 ## References
