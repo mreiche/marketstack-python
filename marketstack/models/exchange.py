@@ -1,9 +1,10 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 import attr
 
 from ..models.currency import Currency
 from ..models.timezone import Timezone
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="Exchange")
 
@@ -19,8 +20,8 @@ class Exchange:
         country_code (str):
         city (str):
         website (str):
-        currency (Currency):
-        timezone (Timezone):
+        currency (Union[Currency, None, Unset]):
+        timezone (Union[None, Timezone, Unset]):
     """
 
     name: str
@@ -30,8 +31,8 @@ class Exchange:
     country_code: str
     city: str
     website: str
-    currency: Currency
-    timezone: Timezone
+    currency: Union[Currency, None, Unset] = UNSET
+    timezone: Union[None, Timezone, Unset] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -42,9 +43,29 @@ class Exchange:
         country_code = self.country_code
         city = self.city
         website = self.website
-        currency = self.currency.to_dict()
+        currency: Union[Dict[str, Any], None, Unset]
+        if isinstance(self.currency, Unset):
+            currency = UNSET
 
-        timezone = self.timezone.to_dict()
+        elif isinstance(self.currency, Currency):
+            currency = UNSET
+            if not isinstance(self.currency, Unset):
+                currency = self.currency.to_dict()
+
+        else:
+            currency = self.currency
+
+        timezone: Union[Dict[str, Any], None, Unset]
+        if isinstance(self.timezone, Unset):
+            timezone = UNSET
+
+        elif isinstance(self.timezone, Timezone):
+            timezone = UNSET
+            if not isinstance(self.timezone, Unset):
+                timezone = self.timezone.to_dict()
+
+        else:
+            timezone = self.timezone
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,10 +78,12 @@ class Exchange:
                 "country_code": country_code,
                 "city": city,
                 "website": website,
-                "currency": currency,
-                "timezone": timezone,
             }
         )
+        if currency is not UNSET:
+            field_dict["currency"] = currency
+        if timezone is not UNSET:
+            field_dict["timezone"] = timezone
 
         return field_dict
 
@@ -81,9 +104,49 @@ class Exchange:
 
         website = d.pop("website")
 
-        currency = Currency.from_dict(d.pop("currency"))
+        def _parse_currency(data: object) -> Union[Currency, None, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                _currency_type_0 = data
+                currency_type_0: Union[Unset, Currency]
+                if isinstance(_currency_type_0, Unset):
+                    currency_type_0 = UNSET
+                else:
+                    currency_type_0 = Currency.from_dict(_currency_type_0)
 
-        timezone = Timezone.from_dict(d.pop("timezone"))
+                return currency_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[Currency, None, Unset], data)
+
+        currency = _parse_currency(d.pop("currency", UNSET))
+
+        def _parse_timezone(data: object) -> Union[None, Timezone, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                _timezone_type_0 = data
+                timezone_type_0: Union[Unset, Timezone]
+                if isinstance(_timezone_type_0, Unset):
+                    timezone_type_0 = UNSET
+                else:
+                    timezone_type_0 = Timezone.from_dict(_timezone_type_0)
+
+                return timezone_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, Timezone, Unset], data)
+
+        timezone = _parse_timezone(d.pop("timezone", UNSET))
 
         exchange = cls(
             name=name,

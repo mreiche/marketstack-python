@@ -26,6 +26,14 @@ def setup_module():
 def test_exchanges():
     response = exchanges.sync(
         client=client,
+        access_key=os.getenv("MARKETSTACK_API_KEY"),
+    )
+    assert isinstance(response, ErrorResponse) is False
+
+
+def test_search_exchanges():
+    response = exchanges.sync(
+        client=client,
         search="Xetra",
         access_key=os.getenv("MARKETSTACK_API_KEY"),
     )

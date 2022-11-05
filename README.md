@@ -16,20 +16,28 @@ MARKETSTACK_TLS_SUPPORT="1"
 from marketstack.client import Client
 import os
 
-tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
-protocol = "https" if tls_support == "1" else "http"
-client = Client(base_url=f"{protocol}://api.marketstack.com/v1")
+def create_client() -> tuple[Client, str]:
+    tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
+    protocol = "https" if tls_support == "1" else "http"
+    
+    access_key = os.getenv("MARKETSTACK_API_KEY")
+    assert access_key is not None and len(access_key) > 0, "Environment variable MARKETSTACK_API_KEY is not defined"
+    
+    client = Client(base_url=f"{protocol}://api.marketstack.com/v1")
+    
+    return client, access_key 
 ```
 
 ### Call operations
 
 ```python
 from marketstack.api.eod import eod
-import os
+
+client, access_key = create_client()
 
 response = eod.sync(
     client=client,
-    access_key=os.getenv("MARKETSTACK_API_KEY"),
+    access_key=access_key,
     symbols="AAPL,AMZN",
     limit=10,
 )
@@ -37,12 +45,35 @@ response = eod.sync(
 
 All endpoint features are implemented and tested. For examples see the repository's `tests/` directory.
 
+### Multiple asynchronous calls
+
+```python
+import asyncio
+from typing import List
+from marketstack.api.intraday import intraday_latest
+from marketstack.api.exchanges import exchanges
+from marketstack.models import ResponseListmodelsIntervalPrice, ResponseListmodelsExchange
+
+async def load_async(symbols: List[str]):
+   client, access_key = create_client()
+   
+   prices_call = intraday_latest.asyncio(access_key=access_key, client=client, symbols=",".join(symbols))
+   exchanges_call = exchanges.asyncio(access_key=access_key, client=client)
+   
+   # Type hints for future results
+   prices_response: ResponseListmodelsIntervalPrice
+   exchanges_response: ResponseListmodelsExchange
+   
+   prices_response, exchanges_response = await asyncio.gather(prices_call, exchanges_call)
+```
+
+
 ### Error handling
 ```python
-from marketstack.models import ErrorCode, ErrorResponse
+from marketstack.models import ErrorCode, Error
 
-assert isinstance(response, ErrorResponse)
-assert response.error.code == ErrorCode.FUNCTION_ACCESS_RESTRICTED
+if isinstance(response.error, Error):
+    assert response.error.code == ErrorCode.FUNCTION_ACCESS_RESTRICTED
 ```
 
 ### Map to Pandas dataframe
