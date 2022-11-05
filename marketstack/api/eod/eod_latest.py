@@ -5,7 +5,9 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_listmodels_eod_price import ResponseListmodelsEodPrice
+from ...models.paged_response_listmodels_eod_price import (
+    PagedResponseListmodelsEodPrice,
+)
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
@@ -62,9 +64,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     if response.status_code == 200:
-        response_200 = ResponseListmodelsEodPrice.from_dict(response.json())
+        response_200 = PagedResponseListmodelsEodPrice.from_dict(response.json())
 
         return response_200
     if response.status_code == 403:
@@ -88,7 +92,9 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -108,7 +114,9 @@ def sync_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     """Latest
 
     Args:
@@ -124,7 +132,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]]
     """
 
     kwargs = _get_kwargs(
@@ -158,7 +166,9 @@ def sync(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     """Latest
 
     Args:
@@ -174,7 +184,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]]
     """
 
     return sync_detailed(
@@ -201,7 +211,9 @@ async def asyncio_detailed(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     """Latest
 
     Args:
@@ -217,7 +229,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]]
     """
 
     kwargs = _get_kwargs(
@@ -249,7 +261,9 @@ async def asyncio(
     date_to: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]
+]:
     """Latest
 
     Args:
@@ -265,7 +279,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsEodPrice]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsEodPrice]]
     """
 
     return (

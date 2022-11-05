@@ -5,7 +5,7 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_listmodels_exchange import ResponseListmodelsExchange
+from ...models.paged_response_listmodels_exchange import PagedResponseListmodelsExchange
 from ...types import UNSET, Response, Unset
 
 
@@ -45,9 +45,11 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     if response.status_code == 200:
-        response_200 = ResponseListmodelsExchange.from_dict(response.json())
+        response_200 = PagedResponseListmodelsExchange.from_dict(response.json())
 
         return response_200
     if response.status_code == 403:
@@ -71,7 +73,9 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -87,7 +91,9 @@ def sync_detailed(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     """Query
 
     Args:
@@ -97,7 +103,7 @@ def sync_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]]
     """
 
     kwargs = _get_kwargs(
@@ -123,7 +129,9 @@ def sync(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     """Query
 
     Args:
@@ -133,7 +141,7 @@ def sync(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]]
     """
 
     return sync_detailed(
@@ -152,7 +160,9 @@ async def asyncio_detailed(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Response[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     """Query
 
     Args:
@@ -162,7 +172,7 @@ async def asyncio_detailed(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]]
     """
 
     kwargs = _get_kwargs(
@@ -186,7 +196,9 @@ async def asyncio(
     search: Union[Unset, None, str] = UNSET,
     limit: Union[Unset, None, int] = UNSET,
     offset: Union[Unset, None, int] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]:
+) -> Optional[
+    Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]
+]:
     """Query
 
     Args:
@@ -196,7 +208,7 @@ async def asyncio(
         offset (Union[Unset, None, int]):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsExchange]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsExchange]]
     """
 
     return (

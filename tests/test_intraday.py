@@ -3,7 +3,7 @@ from datetime import datetime
 
 from marketstack.api.intraday import intraday, intraday_date, intraday_latest
 from marketstack.client import Client
-from marketstack.models import Interval
+from marketstack.models import Interval, ErrorResponse
 from tests.setup import create_client, this_january, this_february, day_format
 
 client: Client
@@ -24,6 +24,8 @@ def test_intraday():
         interval=Interval.HOUR1,
         limit=10,
     )
+    assert isinstance(response, ErrorResponse) is False
+
     aapl = None
     amzn = None
     for price in response.data:

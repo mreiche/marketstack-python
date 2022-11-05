@@ -5,7 +5,7 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_listmodels_split import ResponseListmodelsSplit
+from ...models.paged_response_listmodels_split import PagedResponseListmodelsSplit
 from ...models.sort import Sort
 from ...types import UNSET, Response, Unset
 
@@ -51,9 +51,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     if response.status_code == 200:
-        response_200 = ResponseListmodelsSplit.from_dict(response.json())
+        response_200 = PagedResponseListmodelsSplit.from_dict(response.json())
 
         return response_200
     if response.status_code == 403:
@@ -77,7 +77,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -94,7 +94,7 @@ def sync_detailed(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     """Symbol Splits
 
     Args:
@@ -107,7 +107,7 @@ def sync_detailed(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]
     """
 
     kwargs = _get_kwargs(
@@ -135,7 +135,7 @@ def sync(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     """Symbol Splits
 
     Args:
@@ -148,7 +148,7 @@ def sync(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]
     """
 
     return sync_detailed(
@@ -169,7 +169,7 @@ async def asyncio_detailed(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     """Symbol Splits
 
     Args:
@@ -182,7 +182,7 @@ async def asyncio_detailed(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]
     """
 
     kwargs = _get_kwargs(
@@ -208,7 +208,7 @@ async def asyncio(
     sort: Union[Unset, None, Sort] = UNSET,
     date_from: Union[Unset, None, str] = UNSET,
     date_to: Union[Unset, None, str] = UNSET,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]:
     """Symbol Splits
 
     Args:
@@ -221,7 +221,7 @@ async def asyncio(
             ISO-8601 %Y-%m-%dT%H:%M:%S+%Z
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseListmodelsSplit]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseListmodelsSplit]]
     """
 
     return (

@@ -5,7 +5,7 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_exchange_eod import ResponseExchangeEod
+from ...models.paged_response_exchange_eod import PagedResponseExchangeEod
 from ...types import UNSET, Response
 
 
@@ -40,9 +40,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     if response.status_code == 200:
-        response_200 = ResponseExchangeEod.from_dict(response.json())
+        response_200 = PagedResponseExchangeEod.from_dict(response.json())
 
         return response_200
     if response.status_code == 403:
@@ -66,7 +66,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -81,7 +81,7 @@ def sync_detailed(
     client: Client,
     access_key: str,
     symbols: str,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
@@ -90,7 +90,7 @@ def sync_detailed(
         symbols (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
@@ -114,7 +114,7 @@ def sync(
     client: Client,
     access_key: str,
     symbols: str,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
@@ -123,7 +123,7 @@ def sync(
         symbols (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]
     """
 
     return sync_detailed(
@@ -140,7 +140,7 @@ async def asyncio_detailed(
     client: Client,
     access_key: str,
     symbols: str,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
@@ -149,7 +149,7 @@ async def asyncio_detailed(
         symbols (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]
     """
 
     kwargs = _get_kwargs(
@@ -171,7 +171,7 @@ async def asyncio(
     client: Client,
     access_key: str,
     symbols: str,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]:
     """Mic Eod Latest
 
     Args:
@@ -180,7 +180,7 @@ async def asyncio(
         symbols (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeEod]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeEod]]
     """
 
     return (

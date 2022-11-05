@@ -16,13 +16,12 @@ MARKETSTACK_TLS_SUPPORT="1"
 from marketstack.client import Client
 import os
 
-def create_client() -> tuple[Client, str]:
-    tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
-    protocol = "https" if tls_support == "1" else "http"
-    
+def create_client() -> tuple[Client, str]:  
     access_key = os.getenv("MARKETSTACK_API_KEY")
     assert access_key is not None and len(access_key) > 0, "Environment variable MARKETSTACK_API_KEY is not defined"
-    
+
+    tls_support = os.getenv("MARKETSTACK_TLS_SUPPORT")
+    protocol = "https" if tls_support == "1" else "http"
     client = Client(base_url=f"{protocol}://api.marketstack.com/v1")
     
     return client, access_key 
@@ -52,7 +51,7 @@ import asyncio
 from typing import List
 from marketstack.api.intraday import intraday_latest
 from marketstack.api.exchanges import exchanges
-from marketstack.models import ResponseListmodelsIntervalPrice, ResponseListmodelsExchange
+from marketstack.models import PagedResponseListmodelsIntervalPrice, PagedResponseListmodelsExchange
 
 async def load_async(symbols: List[str]):
    client, access_key = create_client()
@@ -61,8 +60,8 @@ async def load_async(symbols: List[str]):
    exchanges_call = exchanges.asyncio(access_key=access_key, client=client)
    
    # Type hints for future results
-   prices_response: ResponseListmodelsIntervalPrice
-   exchanges_response: ResponseListmodelsExchange
+   prices_response: PagedResponseListmodelsIntervalPrice
+   exchanges_response: PagedResponseListmodelsExchange
    
    prices_response, exchanges_response = await asyncio.gather(prices_call, exchanges_call)
 ```
@@ -70,9 +69,9 @@ async def load_async(symbols: List[str]):
 
 ### Error handling
 ```python
-from marketstack.models import ErrorCode, Error
+from marketstack.models import ErrorCode, ErrorResponse
 
-if isinstance(response.error, Error):
+if isinstance(response, ErrorResponse):
     assert response.error.code == ErrorCode.FUNCTION_ACCESS_RESTRICTED
 ```
 

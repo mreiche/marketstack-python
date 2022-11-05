@@ -5,7 +5,7 @@ import httpx
 from ...client import Client
 from ...models.error_response import ErrorResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.response_exchange_intraday import ResponseExchangeIntraday
+from ...models.paged_response_exchange_intraday import PagedResponseExchangeIntraday
 from ...types import UNSET, Response
 
 
@@ -43,9 +43,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, response: httpx.Response
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     if response.status_code == 200:
-        response_200 = ResponseExchangeIntraday.from_dict(response.json())
+        response_200 = PagedResponseExchangeIntraday.from_dict(response.json())
 
         return response_200
     if response.status_code == 403:
@@ -69,7 +69,7 @@ def _parse_response(
 
 def _build_response(
     *, response: httpx.Response
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     return Response(
         status_code=response.status_code,
         content=response.content,
@@ -85,7 +85,7 @@ def sync_detailed(
     client: Client,
     symbols: str,
     access_key: str,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     """Mic Intraday Date
 
     Args:
@@ -96,7 +96,7 @@ def sync_detailed(
         access_key (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -122,7 +122,7 @@ def sync(
     client: Client,
     symbols: str,
     access_key: str,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     """Mic Intraday Date
 
     Args:
@@ -133,7 +133,7 @@ def sync(
         access_key (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]
     """
 
     return sync_detailed(
@@ -152,7 +152,7 @@ async def asyncio_detailed(
     client: Client,
     symbols: str,
     access_key: str,
-) -> Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     """Mic Intraday Date
 
     Args:
@@ -163,7 +163,7 @@ async def asyncio_detailed(
         access_key (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]
     """
 
     kwargs = _get_kwargs(
@@ -187,7 +187,7 @@ async def asyncio(
     client: Client,
     symbols: str,
     access_key: str,
-) -> Optional[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]:
+) -> Optional[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]:
     """Mic Intraday Date
 
     Args:
@@ -198,7 +198,7 @@ async def asyncio(
         access_key (str):
 
     Returns:
-        Response[Union[ErrorResponse, HTTPValidationError, ResponseExchangeIntraday]]
+        Response[Union[ErrorResponse, HTTPValidationError, PagedResponseExchangeIntraday]]
     """
 
     return (
