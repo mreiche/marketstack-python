@@ -1,37 +1,32 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.currency import Currency
-from ..models.timezone import Timezone
+from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="Exchange")
+T = TypeVar("T", bound="ExchangeBase")
 
 
 @attr.s(auto_attribs=True)
-class Exchange:
+class ExchangeBase:
     """
     Attributes:
         name (str):
         acronym (str):
         mic (str):
         country (str):
-        country_code (str):
         city (str):
         website (str):
-        currency (Currency):
-        timezone (Timezone):
+        country_code (Union[Unset, str]):
     """
 
     name: str
     acronym: str
     mic: str
     country: str
-    country_code: str
     city: str
     website: str
-    currency: Currency
-    timezone: Timezone
+    country_code: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -39,12 +34,9 @@ class Exchange:
         acronym = self.acronym
         mic = self.mic
         country = self.country
-        country_code = self.country_code
         city = self.city
         website = self.website
-        currency = self.currency.to_dict()
-
-        timezone = self.timezone.to_dict()
+        country_code = self.country_code
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -54,13 +46,12 @@ class Exchange:
                 "acronym": acronym,
                 "mic": mic,
                 "country": country,
-                "country_code": country_code,
                 "city": city,
                 "website": website,
-                "currency": currency,
-                "timezone": timezone,
             }
         )
+        if country_code is not UNSET:
+            field_dict["country_code"] = country_code
 
         return field_dict
 
@@ -75,30 +66,24 @@ class Exchange:
 
         country = d.pop("country")
 
-        country_code = d.pop("country_code")
-
         city = d.pop("city")
 
         website = d.pop("website")
 
-        currency = Currency.from_dict(d.pop("currency"))
+        country_code = d.pop("country_code", UNSET)
 
-        timezone = Timezone.from_dict(d.pop("timezone"))
-
-        exchange = cls(
+        exchange_base = cls(
             name=name,
             acronym=acronym,
             mic=mic,
             country=country,
-            country_code=country_code,
             city=city,
             website=website,
-            currency=currency,
-            timezone=timezone,
+            country_code=country_code,
         )
 
-        exchange.additional_properties = d
-        return exchange
+        exchange_base.additional_properties = d
+        return exchange_base
 
     @property
     def additional_keys(self) -> List[str]:

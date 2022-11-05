@@ -32,6 +32,8 @@ def test_exchanges():
     assert isinstance(response, ErrorResponse) is False
     assert response.pagination.count == 1
     assert response.data[0].mic == "XETRA"
+    assert response.data[0].currency.code == "EUR"
+    assert response.data[0].timezone.timezone == "Europe/Berlin"
 
 
 def test_exchange_mic():

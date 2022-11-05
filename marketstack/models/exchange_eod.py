@@ -2,9 +2,7 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
 
-from ..models.currency import Currency
 from ..models.eod_price import EodPrice
-from ..models.timezone import Timezone
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ExchangeEod")
@@ -22,8 +20,6 @@ class ExchangeEod:
         website (str):
         eod (List[EodPrice]):
         country_code (Union[Unset, str]):
-        currency (Union[Unset, Currency]):
-        timezone (Union[Unset, Timezone]):
     """
 
     name: str
@@ -34,8 +30,6 @@ class ExchangeEod:
     website: str
     eod: List[EodPrice]
     country_code: Union[Unset, str] = UNSET
-    currency: Union[Unset, Currency] = UNSET
-    timezone: Union[Unset, Timezone] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -52,13 +46,6 @@ class ExchangeEod:
             eod.append(eod_item)
 
         country_code = self.country_code
-        currency: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.currency, Unset):
-            currency = self.currency.to_dict()
-
-        timezone: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.timezone, Unset):
-            timezone = self.timezone.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -75,10 +62,6 @@ class ExchangeEod:
         )
         if country_code is not UNSET:
             field_dict["country_code"] = country_code
-        if currency is not UNSET:
-            field_dict["currency"] = currency
-        if timezone is not UNSET:
-            field_dict["timezone"] = timezone
 
         return field_dict
 
@@ -106,20 +89,6 @@ class ExchangeEod:
 
         country_code = d.pop("country_code", UNSET)
 
-        _currency = d.pop("currency", UNSET)
-        currency: Union[Unset, Currency]
-        if isinstance(_currency, Unset):
-            currency = UNSET
-        else:
-            currency = Currency.from_dict(_currency)
-
-        _timezone = d.pop("timezone", UNSET)
-        timezone: Union[Unset, Timezone]
-        if isinstance(_timezone, Unset):
-            timezone = UNSET
-        else:
-            timezone = Timezone.from_dict(_timezone)
-
         exchange_eod = cls(
             name=name,
             acronym=acronym,
@@ -129,8 +98,6 @@ class ExchangeEod:
             website=website,
             eod=eod,
             country_code=country_code,
-            currency=currency,
-            timezone=timezone,
         )
 
         exchange_eod.additional_properties = d

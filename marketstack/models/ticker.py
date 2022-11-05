@@ -1,10 +1,8 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-from ..models.exchange import Exchange
-from ..models.timezone import Timezone
-from ..types import UNSET, Unset
+from ..models.exchange_base import ExchangeBase
 
 T = TypeVar("T", bound="Ticker")
 
@@ -17,16 +15,16 @@ class Ticker:
         symbol (str):
         has_intraday (bool):
         has_eod (bool):
-        stock_exchange (Union[Unset, Exchange]):
-        timezone (Union[Unset, Timezone]):
+        country (str):
+        stock_exchange (ExchangeBase):
     """
 
     name: str
     symbol: str
     has_intraday: bool
     has_eod: bool
-    stock_exchange: Union[Unset, Exchange] = UNSET
-    timezone: Union[Unset, Timezone] = UNSET
+    country: str
+    stock_exchange: ExchangeBase
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -34,13 +32,8 @@ class Ticker:
         symbol = self.symbol
         has_intraday = self.has_intraday
         has_eod = self.has_eod
-        stock_exchange: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.stock_exchange, Unset):
-            stock_exchange = self.stock_exchange.to_dict()
-
-        timezone: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.timezone, Unset):
-            timezone = self.timezone.to_dict()
+        country = self.country
+        stock_exchange = self.stock_exchange.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -50,12 +43,10 @@ class Ticker:
                 "symbol": symbol,
                 "has_intraday": has_intraday,
                 "has_eod": has_eod,
+                "country": country,
+                "stock_exchange": stock_exchange,
             }
         )
-        if stock_exchange is not UNSET:
-            field_dict["stock_exchange"] = stock_exchange
-        if timezone is not UNSET:
-            field_dict["timezone"] = timezone
 
         return field_dict
 
@@ -70,27 +61,17 @@ class Ticker:
 
         has_eod = d.pop("has_eod")
 
-        _stock_exchange = d.pop("stock_exchange", UNSET)
-        stock_exchange: Union[Unset, Exchange]
-        if isinstance(_stock_exchange, Unset):
-            stock_exchange = UNSET
-        else:
-            stock_exchange = Exchange.from_dict(_stock_exchange)
+        country = d.pop("country")
 
-        _timezone = d.pop("timezone", UNSET)
-        timezone: Union[Unset, Timezone]
-        if isinstance(_timezone, Unset):
-            timezone = UNSET
-        else:
-            timezone = Timezone.from_dict(_timezone)
+        stock_exchange = ExchangeBase.from_dict(d.pop("stock_exchange"))
 
         ticker = cls(
             name=name,
             symbol=symbol,
             has_intraday=has_intraday,
             has_eod=has_eod,
+            country=country,
             stock_exchange=stock_exchange,
-            timezone=timezone,
         )
 
         ticker.additional_properties = d
