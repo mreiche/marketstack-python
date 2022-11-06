@@ -58,6 +58,10 @@ def _parse_response(
         response_200 = PagedResponseListmodelsDividend.from_dict(response.json())
 
         return response_200
+    if response.status_code == 401:
+        response_401 = ErrorResponse.from_dict(response.json())
+
+        return response_401
     if response.status_code == 403:
         response_403 = ErrorResponse.from_dict(response.json())
 
@@ -70,6 +74,10 @@ def _parse_response(
         response_429 = ErrorResponse.from_dict(response.json())
 
         return response_429
+    if response.status_code == 500:
+        response_500 = ErrorResponse.from_dict(response.json())
+
+        return response_500
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
