@@ -1,6 +1,8 @@
 # marketstack-python
 Inofficial Python OpenAPI implementation of the [marketstack API](https://marketstack.com/documentation) based on the [marketstack OpenAPI spec](https://github.com/mreiche/marketstack-openapi).
 
+![](https://img.shields.io/pypi/v/marketstack)
+
 ## Usage
 
 ### Configuration (recommended)
