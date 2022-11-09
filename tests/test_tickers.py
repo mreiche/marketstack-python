@@ -47,16 +47,6 @@ def test_ticker_symbol():
     assert response.symbol == "AAPL"
 
 
-def test_ticker_symbol_not_found():
-    response = ticker_symbol.sync(
-        symbol="AYBABTO",
-        client=client,
-        access_key=os.getenv("MARKETSTACK_API_KEY"),
-    )
-    assert isinstance(response, ErrorResponse) is True
-    assert response.error.code == ErrorCode.NOT_FOUND_ERROR
-
-
 def test_ticker_symbol_dividends():
     response = ticker_symbol_dividends.sync(
         symbol="AAPL",
