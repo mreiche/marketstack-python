@@ -13,7 +13,7 @@ from marketstack.api.tickers import (
     tickers,
 )
 from marketstack.client import Client
-from marketstack.models import ErrorResponse
+from marketstack.models import ErrorResponse, ErrorCode
 from tests.setup import create_client, this_january, day_format
 
 client: Client
@@ -45,6 +45,16 @@ def test_ticker_symbol():
     )
     assert isinstance(response, ErrorResponse) is False
     assert response.symbol == "AAPL"
+
+
+def test_ticker_symbol_not_found():
+    response = ticker_symbol.sync(
+        symbol="AYBABTO",
+        client=client,
+        access_key=os.getenv("MARKETSTACK_API_KEY"),
+    )
+    assert isinstance(response, ErrorResponse) is True
+    assert response.error.code == ErrorCode.NOT_FOUND_ERROR
 
 
 def test_ticker_symbol_dividends():
